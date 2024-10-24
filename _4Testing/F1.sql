@@ -12,7 +12,7 @@ PROCEDURE DBA_sp_Sync_General_Log()
 	Task: sync log data to custom table
 
 	Revisions:
-		- 20241024@Sol: Initialize SP [RedmineID: #000000]
+		- 20241024@Sol: Initialize SP [RedmineID: #000001]
 */
 BEGIN
 
