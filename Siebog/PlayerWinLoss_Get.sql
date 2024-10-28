@@ -10,6 +10,14 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Siebog`.`PlayerWinLoss_Get`
   IN TimeZone varchar(30),
   IN ReferenceIds JSON
 )
+/*
+  Created: 20241028@Issac
+	DB: TSDB-Siebog
+	Task: sync log data to custom table
+
+	Revisions:
+		- 20241028@Issac: Initialize SP [RedmineID: #000000]
+*/
 BEGIN
   WITH LicenseeIds AS 
       (
