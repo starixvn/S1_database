@@ -1,9 +1,9 @@
 /*<info serverAlias="TSDB-Siebog" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
-DROP PROCEDURE IF EXISTS 'Siebog'.'PlayerWinLoss_Get';
+DROP PROCEDURE IF EXISTS PlayerWinLoss_Get;
 
 DELIMITER //
 
-CREATE DEFINER=`dbo`@`%` PROCEDURE `Siebog`.`PlayerWinLoss_Get`
+CREATE DEFINER=`dbo`@`%` PROCEDURE PlayerWinLoss_Get
 (
   IN StartTime datetime,
   IN EndTime datetime,
