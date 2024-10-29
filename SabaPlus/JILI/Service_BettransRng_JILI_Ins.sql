@@ -1,0 +1,131 @@
+/*<info serverAlias="TSDB-Siebog" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+DROP PROCEDURE IF EXISTS `Service_BettransRng_JILI_Ins`;
+DELIMITER ;;
+CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_JILI_Ins`(
+    IN YYYYMM VARCHAR(6),
+    IN Seq VARCHAR(64), 
+    IN OperatorCustId VARCHAR(32), 
+    IN GameType VARCHAR(50),
+    IN IpAddress VARCHAR(25), 
+    IN TicketNo VARCHAR(200), 
+    IN GameId VARCHAR(50), 
+    IN GameRoundId VARCHAR(100), 
+    IN TransactionId VARCHAR(100), 
+    IN Stake DECIMAL(20,6), 
+    IN ActualStake DECIMAL(20,6),
+    IN NetStake DECIMAL(20,6),
+    IN Payout DECIMAL(20,6),
+    IN Odds DECIMAL(20,2),
+    IN BetChoice VARCHAR(100),
+    IN TableCode VARCHAR(100),
+    IN GameResult VARCHAR(2000),
+    IN CurrencyISO VARCHAR(10),
+    IN BonusId VARCHAR(100),
+    IN BonusName VARCHAR(500),
+    IN PrizeName VARCHAR(500),
+    IN SettleDateUnix BIGINT,
+    IN TicketType TINYINT,
+    IN TicketStatus TINYINT,
+    IN SettleFlag TINYINT,
+    OUT SQ BIGINT
+)
+/*
+  Created: 20241029@Kathy
+	DB: TSDB-Siebog
+	Task: insert bet JILI
+
+	Revisions:
+		- 20241029@Kathy: insert bet JILI
+*/
+
+BEGIN
+    SET @reqId = Seq;
+    SET @round = CAST(GameRoundId AS SIGNED);
+    SET @userId = OperatorCustId; 
+    SET @currency = '' ;
+    SET @game = GameId;
+    SET @wagersTime = UNIX_TIMESTAMP(IFNULL(SettleDateUnix,NOW())); 
+    SET @betAmount = CASE WHEN NetStake > 0 THEN NetStake ELSE ActualStake END;
+    SET @winloseAmount = Payout;
+    SET @turnover = 0;
+    SET @`preserve` = 0;
+    SET @jpContribute = 0;
+    SET @jpWin = 0;
+    SET @isFreeRound = 0 ;
+    SET @TransactionID = 0;
+    SET @sessionId = 0;
+    SET @`type` = 0; -- `type`;
+    SET @SiteId = 0;
+    SET @CustId = 0; -- CustId;
+    SET @CurrencyId = 0 ;
+    SET @TicketType = TicketType;
+    SET @TicketStatus = TicketStatus;
+    SET @SettleFlag = SettleFlag;
+    SET @TransId = @round;
+    SET @TicketNo = TicketNo;
+    
+    SET @CMD = CONCAT("INSERT INTO BettransRng_JILI_", YYYYMM,
+                " (
+                        `TransId`,
+                        `reqId`,
+                        `round`,
+                        `userId`,
+                        `currency`,
+                        `game`,
+                        `wagersTime`,
+                        `betAmount`,
+                        `winloseAmount`,
+                        `turnover`,
+                        `preserve`,
+                        `jpContribute`,
+                        `jpWin`,
+                        `isFreeRound`,
+                        `TransactionID`,
+                        `sessionId`,
+                        `type`,
+                        `SiteId`,
+                        `CustId`,
+                        `CurrencyId`,
+                        `TicketType`,
+                        `TicketStatus`,
+                        `SettleFlag`,
+                        `TicketNo`
+                    )
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
+
+    PREPARE stmt FROM @CMD;
+    EXECUTE stmt USING 
+        @TransId,
+        @reqId,
+        @round,
+        @userId,
+        @currency,
+        @game,
+        @wagersTime,
+        @betAmount,
+        @winloseAmount,
+        @turnover,
+        @`preserve`,
+        @jpContribute,
+        @jpWin,
+        @isFreeRound,
+        @TransactionID,
+        @sessionId,
+        @`type`,
+        @SiteId,
+        @CustId,
+        @CurrencyId,
+        @TicketType,
+        @TicketStatus,
+        @SettleFlag,
+        @TicketNo;
+        
+	SELECT ROW_COUNT();
+    DEALLOCATE PREPARE stmt;
+    
+    SET SQ = LAST_INSERT_ID();
+    
+END ;;
+DELIMITER ;
+
+GRANT EXECUTE ON PROCEDURE Siebog.Service_BettransRng_JILI_Ins TO 'app_srv'@'%';
