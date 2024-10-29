@@ -127,5 +127,3 @@ BEGIN
     
 END ;;
 DELIMITER ;
-
-GRANT EXECUTE ON PROCEDURE Siebog.Service_BettransRng_JILI_Ins TO 'app_srv'@'%';

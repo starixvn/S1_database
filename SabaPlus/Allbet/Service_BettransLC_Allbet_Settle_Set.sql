@@ -1,0 +1,27 @@
+/*<info serverAlias="TSDB-Siebog" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+DROP PROCEDURE IF EXISTS `Service_BettransLC_Allbet_Settle_Set`;
+DELIMITER ;;
+CREATE DEFINER=`nova88`@`%` PROCEDURE `Service_BettransLC_Allbet_Settle_Set`(
+    IN YYYYMM VARCHAR(6),
+    IN TransId VARCHAR(200)
+)
+/*
+  Created: 20241029@Kathy
+	DB: TSDB-Siebog
+	Task: update bet Allbet
+
+	Revisions:
+		- 20241029@Kathy: update bet Allbet
+*/
+BEGIN
+    SET @TransId = TransId;
+    
+    SET @CMD = CONCAT(
+        "UPDATE BettransLC_Allbet_", YYYYMM, " SET SettleFlag = 1 WHERE TicketNo = ? AND SettleFlag != 1;"
+    );
+    PREPARE stmt FROM @CMD;
+    EXECUTE stmt USING @TransId;
+    SELECT ROW_COUNT();
+    DEALLOCATE PREPARE stmt;
+END;;
+DELIMITER ;

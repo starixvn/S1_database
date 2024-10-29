@@ -24,5 +24,3 @@ BEGIN
     DEALLOCATE PREPARE stmt;
 END;;
 DELIMITER ;
-
-GRANT EXECUTE ON PROCEDURE Siebog.Service_BettransRng_JILI_ResultId_Get TO 'app_srv'@'%';
