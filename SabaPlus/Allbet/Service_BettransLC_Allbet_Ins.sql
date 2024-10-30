@@ -27,6 +27,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransLC_Allbet_Ins`(
     IN TicketType TINYINT,
     IN TicketStatus TINYINT,
     IN SettleFlag TINYINT,
+	IN OtherBetInfo JSON,
     OUT SQ BIGINT
 )
 /*
@@ -63,6 +64,7 @@ BEGIN
     SET @TicketType = TicketType;
     SET @TicketStatus = TicketStatus;
     SET @SettleFlag = SettleFlag;
+	SET @OtherBetInfo = OtherBetInfo;
 
     SET @CMD = CONCAT("INSERT INTO BettransLC_Allbet_", YYYYMM,
                 " (
@@ -89,9 +91,10 @@ BEGIN
                         `PrizeName`,
                         `TicketType`,
                         `TicketStatus`,
-                        `SettleFlag`
+                        `SettleFlag`,
+						`OtherBetInfo`
                     )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
 
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING 
@@ -118,7 +121,8 @@ BEGIN
         @PrizeName,
         @TicketType,
         @TicketStatus,
-        @SettleFlag;
+        @SettleFlag,
+		@OtherBetInfo;
 
     SELECT ROW_COUNT();
     DEALLOCATE PREPARE stmt;
