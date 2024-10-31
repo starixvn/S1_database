@@ -1,4 +1,4 @@
-/*<info serverAlias="TSDB-Siebog" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_CancelBet_Set`(
     IN YYYYMM VARCHAR(6),
@@ -6,7 +6,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_CancelBet_Set`(
 )
 /*
   Created: 20241031@Luke
-	DB: TSDB-Siebog
+	DB: TSDB-TSDB
 	Task: Cancel FaChai bet ticket
 
 	Revisions:

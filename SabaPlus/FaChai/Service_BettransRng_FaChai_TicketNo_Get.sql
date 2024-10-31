@@ -1,4 +1,4 @@
-/*<info serverAlias="TSDB-Siebog" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DROP PROCEDURE IF EXISTS `Service_BettransRng_FaChai_TicketNo_Get`;
 DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_TicketNo_Get`(
@@ -7,7 +7,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_TicketNo_Get`(
 )
 /*
   Created: 20241030@Luke
-	DB: TSDB-Siebog
+	DB: TSDB-TSDB
 	Task: Get FaChai bet info
 
 	Revisions:
