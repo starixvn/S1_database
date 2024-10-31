@@ -2,7 +2,7 @@
 DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_Get`(
     IN YYYYMM varchar(6), 
-    IN TransId VARCHAR(64)
+    IN TransId VARCHAR(200)
 /*
   Created: 20241031@Luke
 	DB: TSDB-TSDB
@@ -13,11 +13,11 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_Get`(
 */
 )
 BEGIN
-    SET @RecordID = TransId ;
+    SET @TicketNo = TransId ;
     SET @CMD = CONCAT("Select FC.`SQ`, FC.`RecordID`, FC.`MemberAccount`, FC.`TicketStatus`, FC.`Currency`, FC.`Bet`, FC.`Win`, FC.`NetWin`, FC.`Ts`, FC.`GameID`
-          FROM BettransRng_FaChai_", YYYYMM, " AS FC  WHERE  FC.`RecordID` = ? ") ;
+          FROM BettransRng_FaChai_", YYYYMM, " AS FC  WHERE  FC.`TicketNo` = ? ") ;
     PREPARE stmt FROM @CMD;
-    EXECUTE stmt USING @RecordID;
+    EXECUTE stmt USING @TicketNo;
     DEALLOCATE PREPARE stmt;
 END$$
 DELIMITER ;
