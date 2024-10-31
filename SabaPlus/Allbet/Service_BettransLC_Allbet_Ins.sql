@@ -1,4 +1,4 @@
-/*<info serverAlias="TSDB-Siebog" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DROP PROCEDURE IF EXISTS `Service_BettransLC_Allbet_Ins`;
 DELIMITER ;;
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransLC_Allbet_Ins`(
@@ -29,15 +29,16 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransLC_Allbet_Ins`(
     IN SettleFlag TINYINT,
 	IN OtherBetInfo JSON,
     OUT SQ BIGINT
-)
 /*
-  Created: 20241029@Kathy
+  Created: 
 	DB: TSDB-Siebog
 	Task: insert bet Allbet
 
 	Revisions:
 		- 20241029@Kathy: insert bet Allbet
 */
+)
+
 
 BEGIN
     SET @Seq = Seq;

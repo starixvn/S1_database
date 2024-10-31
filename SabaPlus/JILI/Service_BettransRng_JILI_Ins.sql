@@ -1,4 +1,4 @@
-/*<info serverAlias="TSDB-Siebog" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DROP PROCEDURE IF EXISTS `Service_BettransRng_JILI_Ins`;
 DELIMITER ;;
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_JILI_Ins`(
@@ -28,15 +28,16 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_JILI_Ins`(
     IN TicketStatus TINYINT,
     IN SettleFlag TINYINT,
     OUT SQ BIGINT
-)
 /*
-  Created: 20241029@Kathy
-	DB: TSDB-Siebog
+  Created: 
+	DB: TSDB-TSDB
 	Task: insert bet JILI
 
 	Revisions:
 		- 20241029@Kathy: insert bet JILI
 */
+)
+
 
 BEGIN
     SET @reqId = Seq;
@@ -44,7 +45,7 @@ BEGIN
     SET @userId = OperatorCustId; 
     SET @currency = '' ;
     SET @game = GameId;
-    SET @wagersTime = UNIX_TIMESTAMP(IFNULL(SettleDateUnix,NOW())); 
+    SET @wagersTime = CASE WHEN SettleDateUnix = 0 THEN UNIX_TIMESTAMP(NOW()) ELSE SettleDateUnix END; 
     SET @betAmount = CASE WHEN NetStake > 0 THEN NetStake ELSE ActualStake END;
     SET @winloseAmount = Payout;
     SET @turnover = 0;

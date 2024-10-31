@@ -1,4 +1,4 @@
-/*<info serverAlias="TSDB-Siebog" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DROP PROCEDURE IF EXISTS `Service_BettransRng_PP_Ins`;
 DELIMITER ;;
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_PP_Ins`(
@@ -28,71 +28,77 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_PP_Ins`(
     IN TicketStatus TINYINT,
     IN SettleFlag TINYINT,
     OUT SQ BIGINT
-)
 /*
-  Created: 20241029@Kathy
-	DB: TSDB-Siebog
+  Created:
+	DB: TSDB-TSDB
 	Task: insert bet PP
 
 	Revisions:
 		- 20241029@Kathy: insert bet PP
 */
+)
+
 BEGIN
-	SET @reference  = seq;
+	SET @seq  = seq;
     SET @roundId = GameRoundId;
     SET @gameId = GameId;
-    SET @amount = ActualStake;
-    SET @userId = OperatorCustId;
+    SET @OperatorCustId = OperatorCustId;
     SET @roundDetails = '';	
-    SET @timestamp = UNIX_TIMESTAMP(IFNULL(SettleDateUnix,NOW())); 
+    SET @SettleDateUnix = FROM_UNIXTIME(SettleDateUnix);
     SET @bonusCode = '';
     SET @jackpotId = 0;
     SET @jackpotContribution = 0;
-    SET @type = TicketType;
+    SET @TicketType = TicketType;
     SET @TicketStatus = TicketStatus;
-	SET @Flag = SettleFlag;	
+	SET @SettleFlag = SettleFlag;	
     SET @promoWinAmount = 0;
     SET @promoWinReference = '';
     SET @promoCampaignID = 0;
     SET @promoCampaignType = ''; 
     SET @TicketNo = TicketNo;
+	SET @ActualStake = ActualStake;
+	SET @Payout = Payout;
    
    SET @CMD = CONCAT("INSERT INTO BettransRng_PP_", YYYYMM,
                 " (
-                        `reference`,
+                        `seq`,
                         `roundId`,
                         `gameId`,
-                        `amount`,
-                        `userId`,
+                        `ActualStake`,
+						`Payout`,
+                        `OperatorCustId`,
                         `roundDetails`,
-                        `timestamp`,
+                        `SettleDate`,
                         `bonusCode`,
                         `jackpotId`,
                         `jackpotContribution`,
-                        `type`,
+                        `TicketType`,
                         `TicketStatus`,
+						`SettleFlag`,
                         `promoWinAmount`,
                         `promoWinReference`,
                         `promoCampaignID`,
                         `promoCampaignType`,
                         `TicketNo`
                     )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
                 
 	PREPARE stmt FROM @CMD;
     EXECUTE stmt USING 
-		@reference
+		@seq
         ,@roundId
         ,@gameId
-        ,@amount
-        ,@userId
+        ,@ActualStake
+		,@Payout
+        ,@OperatorCustId
         ,@roundDetails
-        ,@timestamp
+        ,@SettleDateUnix
         ,@bonusCode
 		,@jackpotId
         ,@jackpotContribution
-        ,@type
+        ,@TicketType
         ,@TicketStatus
+		,@SettleFlag
         ,@promoWinAmount
         ,@promoWinReference
         ,@promoCampaignID

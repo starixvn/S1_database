@@ -1,18 +1,19 @@
-/*<info serverAlias="TSDB-Siebog" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DROP PROCEDURE IF EXISTS `Service_BettransLC_Allbet_Settle_Set`;
 DELIMITER ;;
 CREATE DEFINER=`nova88`@`%` PROCEDURE `Service_BettransLC_Allbet_Settle_Set`(
     IN YYYYMM VARCHAR(6),
     IN TransId VARCHAR(200)
-)
 /*
   Created: 20241029@Kathy
-	DB: TSDB-Siebog
+	DB: TSDB-TSDB
 	Task: update bet Allbet
 
 	Revisions:
 		- 20241029@Kathy: update bet Allbet
 */
+)
+
 BEGIN
     SET @TransId = TransId;
     

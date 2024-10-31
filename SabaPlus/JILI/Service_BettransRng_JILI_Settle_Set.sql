@@ -1,19 +1,20 @@
-/*<info serverAlias="TSDB-Siebog" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DROP PROCEDURE IF EXISTS `Service_BettransRng_JILI_Settle_Set`;
 DELIMITER ;;
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_JILI_Settle_Set`(
     IN YYYYMM VARCHAR(6),
     IN TransId VARCHAR(200),
     IN TicketStatus TINYINT
-)
 /*
-  Created: 20241029@Kathy
-	DB: TSDB-Siebog
+  Created: 
+	DB: TSDB-TSDB
 	Task: get bet JILI
 
 	Revisions:
 		- 20241029@Kathy: update bet JILI
 */
+)
+
 BEGIN
     SET @TransId = TransId;
     SET @TicketStatus = TicketStatus;
