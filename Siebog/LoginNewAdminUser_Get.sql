@@ -6,15 +6,17 @@ DELIMITER //
 CREATE PROCEDURE LoginNewAdminUser_Get(
     IN UserName varchar(30) CHARACTER SET ASCII,
     IN ReferenceId varchar(30) CHARACTER SET ASCII
-)
-/*
-  Created: 20241028@Issac
-	DB: TSDB-Siebog
-	Task: sync log data to custom table
 
-	Revisions:
-		- 20241028@Issac: Initialize SP [RedmineID: #000000]
-*/
+    /*
+        Created: 20241028@Issac
+        DB: TSDB-Siebog
+        Task: sync log data to custom table
+
+        Revisions:
+            - 20241028@Issac: Initialize SP [RedmineID: #000000]
+    */
+)
+
 BEGIN
     SELECT 
         AdminUserV2.UserId,
