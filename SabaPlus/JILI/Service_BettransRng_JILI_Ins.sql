@@ -48,26 +48,16 @@ BEGIN
     SET @wagersTime = CASE WHEN SettleDateUnix = 0 THEN UNIX_TIMESTAMP(NOW()) ELSE SettleDateUnix END; 
     SET @betAmount = CASE WHEN NetStake > 0 THEN NetStake ELSE ActualStake END;
     SET @winloseAmount = Payout;
-    SET @turnover = 0;
-    SET @`preserve` = 0;
-    SET @jpContribute = 0;
-    SET @jpWin = 0;
-    SET @isFreeRound = 0 ;
-    SET @TransactionID = 0;
-    SET @sessionId = 0;
-    SET @`type` = 0; -- `type`;
     SET @SiteId = 0;
     SET @CustId = 0; -- CustId;
     SET @CurrencyId = 0 ;
     SET @TicketType = TicketType;
     SET @TicketStatus = TicketStatus;
     SET @SettleFlag = SettleFlag;
-    SET @TransId = @round;
     SET @TicketNo = TicketNo;
     
     SET @CMD = CONCAT("INSERT INTO BettransRng_JILI_", YYYYMM,
                 " (
-                        `TransId`,
                         `reqId`,
                         `round`,
                         `userId`,
@@ -76,14 +66,6 @@ BEGIN
                         `wagersTime`,
                         `betAmount`,
                         `winloseAmount`,
-                        `turnover`,
-                        `preserve`,
-                        `jpContribute`,
-                        `jpWin`,
-                        `isFreeRound`,
-                        `TransactionID`,
-                        `sessionId`,
-                        `type`,
                         `SiteId`,
                         `CustId`,
                         `CurrencyId`,
@@ -92,11 +74,10 @@ BEGIN
                         `SettleFlag`,
                         `TicketNo`
                     )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
 
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING 
-        @TransId,
         @reqId,
         @round,
         @userId,
@@ -104,15 +85,7 @@ BEGIN
         @game,
         @wagersTime,
         @betAmount,
-        @winloseAmount,
-        @turnover,
-        @`preserve`,
-        @jpContribute,
-        @jpWin,
-        @isFreeRound,
-        @TransactionID,
-        @sessionId,
-        @`type`,
+        @winloseAmount,        
         @SiteId,
         @CustId,
         @CurrencyId,
