@@ -1,7 +1,7 @@
 /*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DROP PROCEDURE IF EXISTS `Service_BettransLC_Allbet_Settle_Set`;
 DELIMITER ;;
-CREATE DEFINER=`nova88`@`%` PROCEDURE `Service_BettransLC_Allbet_Settle_Set`(
+CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransLC_Allbet_Settle_Set`(
     IN YYYYMM VARCHAR(6),
     IN TransId VARCHAR(200)
 /*
