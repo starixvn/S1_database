@@ -1,9 +1,9 @@
 DELIMITER $$
 
-CREATE EVENT Siebog.auto_gen_tables
+CREATE EVENT TSDB.auto_gen_tables
 ON SCHEDULE 
     EVERY 1 MONTH
-    STARTS '2024-11-30 00-00-01'
+    STARTS '2024-11-30 00:00:01'
 DO
 	/*
 		2024-10-22@Luke: Initial
@@ -15,7 +15,7 @@ BEGIN
     DECLARE __create_interval VARCHAR(20);
     DECLARE __adjust_increment_start BOOLEAN;
     
-    DECLARE cur CURSOR FOR SELECT table_schema, table_name, create_interval, adjust_increment_start FROM Siebog.auto_gen_tablelist;
+    DECLARE cur CURSOR FOR SELECT table_schema, table_name, create_interval, adjust_increment_start FROM TSDB.auto_gen_tablelist;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET __is_done = TRUE;
 
     OPEN cur;
