@@ -23,6 +23,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_Ins`(
     IN BonusName VARCHAR(500),
     IN PrizeName VARCHAR(500),
 	IN SettleFlag TINYINT,
+	IN ActualStake DECIMAL(20,6),
     OUT SQ BIGINT
 )
 /*
@@ -41,8 +42,8 @@ BEGIN
     SET @GameId = GameId;
 	SET @GameType = '';
     SET @isBuyFeature = 0;
-    SET @Bet = Stake;
-    SET @Win = Payout;
+    SET @Bet = CASE WHEN Stake > 0 THEN Stake ELSE ActualStake END;
+    SET @Win = 0;
     SET @JPBet = 0;
     SET @JPPrize = 0;
     SET @NetWin = Payout;
@@ -65,6 +66,7 @@ BEGIN
     SET @BonusName = BonusName;
     SET @PrizeName = PrizeName;
 	SET @SettleFlag = SettleFlag;
+	SET @ValidBet = ActualStake;
     
     SET @CMD = CONCAT("INSERT INTO BettransRng_FaChai_", YYYYMM,
                 " (
@@ -98,9 +100,10 @@ BEGIN
 					  `BonusId` ,
 					  `BonusName` ,
 					  `PrizeName` ,
-					  `SettleFlag`
+					  `SettleFlag`,
+					  `ValidBet`
                     )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
 
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING 
@@ -134,7 +137,8 @@ BEGIN
         @BonusId,
         @BonusName,
         @PrizeName,
-		@SettleFlag;
+		@SettleFlag,
+		@ValidBet;
         
 	SELECT ROW_COUNT();
     DEALLOCATE PREPARE stmt;

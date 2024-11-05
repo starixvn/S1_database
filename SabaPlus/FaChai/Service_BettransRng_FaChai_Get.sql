@@ -6,7 +6,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_Get`(
 /*
   Created: 20241031@Luke
 	DB: TSDB-TSDB
-	Task: Cancel FaChai bet ticket
+	Task: Get FaChai bet ticket info from TicketNo
 
 	Revisions:
 		- 20241031@Luke: Initial
@@ -14,7 +14,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_Get`(
 )
 BEGIN
     SET @TicketNo = TransId ;
-    SET @CMD = CONCAT("Select FC.`SQ`, FC.`RecordID`, FC.`MemberAccount`, FC.`TicketStatus`, FC.`Currency`, FC.`Bet`, FC.`Win`, FC.`NetWin`, FC.`Ts`, FC.`GameID`
+    SET @CMD = CONCAT("Select FC.`SQ`, FC.`RecordID`, FC.`MemberAccount`, FC.`TicketStatus`, FC.`Currency`, FC.`Bet`, FC.`Win`, FC.`NetWin`, FC.`Ts`, FC.`GameID`, FC.`ValidBet`
           FROM BettransRng_FaChai_", YYYYMM, " AS FC  WHERE  FC.`TicketNo` = ? ") ;
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING @TicketNo;
