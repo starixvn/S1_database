@@ -43,10 +43,10 @@ BEGIN
 	SET @GameType = '';
     SET @isBuyFeature = 0;
     SET @Bet = CASE WHEN Stake > 0 THEN Stake ELSE ActualStake END;
-    SET @Win = 0;
+    SET @Win = Payout;
     SET @JPBet = 0;
     SET @JPPrize = 0;
-    SET @NetWin = Payout;
+    SET @NetWin = 0;
     SET @RequireAmt = 0;
     SET @GameDate = FROM_UNIXTIME(SettleDateUnix);
     SET @CreateDate = NOW();
