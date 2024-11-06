@@ -42,19 +42,11 @@ BEGIN
 	SET @seq  = seq;
     SET @roundId = GameRoundId;
     SET @gameId = GameId;
-    SET @OperatorCustId = OperatorCustId;
-    SET @roundDetails = '';	
-    SET @SettleDateUnix = FROM_UNIXTIME(SettleDateUnix);
-    SET @bonusCode = '';
-    SET @jackpotId = 0;
-    SET @jackpotContribution = 0;
+    SET @OperatorCustId = OperatorCustId;	
+    SET @SettleDateUnix = FROM_UNIXTIME(SettleDateUnix);   
     SET @TicketType = TicketType;
     SET @TicketStatus = TicketStatus;
-	SET @SettleFlag = SettleFlag;	
-    SET @promoWinAmount = 0;
-    SET @promoWinReference = '';
-    SET @promoCampaignID = 0;
-    SET @promoCampaignType = ''; 
+	SET @SettleFlag = SettleFlag;	    
     SET @TicketNo = TicketNo;
 	SET @ActualStake = ActualStake;
 	SET @Payout = Payout;
@@ -66,22 +58,14 @@ BEGIN
                         `gameId`,
                         `ActualStake`,
 						`Payout`,
-                        `OperatorCustId`,
-                        `roundDetails`,
-                        `SettleDate`,
-                        `bonusCode`,
-                        `jackpotId`,
-                        `jackpotContribution`,
+                        `OperatorCustId`,                        
+                        `SettleDate`,                        
                         `TicketType`,
                         `TicketStatus`,
-						`SettleFlag`,
-                        `promoWinAmount`,
-                        `promoWinReference`,
-                        `promoCampaignID`,
-                        `promoCampaignType`,
+						`SettleFlag`,                       
                         `TicketNo`
                     )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
                 
 	PREPARE stmt FROM @CMD;
     EXECUTE stmt USING 
@@ -90,19 +74,11 @@ BEGIN
         ,@gameId
         ,@ActualStake
 		,@Payout
-        ,@OperatorCustId
-        ,@roundDetails
-        ,@SettleDateUnix
-        ,@bonusCode
-		,@jackpotId
-        ,@jackpotContribution
+        ,@OperatorCustId        
+        ,@SettleDateUnix        
         ,@TicketType
         ,@TicketStatus
-		,@SettleFlag
-        ,@promoWinAmount
-        ,@promoWinReference
-        ,@promoCampaignID
-        ,@promoCampaignType
+		,@SettleFlag       
         ,@TicketNo;
         
     SELECT ROW_COUNT();

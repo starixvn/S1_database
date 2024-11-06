@@ -55,7 +55,9 @@ BEGIN
     SET @TicketStatus = TicketStatus;
     SET @SettleFlag = SettleFlag;
     SET @TicketNo = TicketNo;
-    
+    SET @IpAddress = IpAddress;
+	SET @GameRoundId = GameRoundId;
+	
     SET @CMD = CONCAT("INSERT INTO BettransRng_JILI_", YYYYMM,
                 " (
                         `reqId`,
@@ -72,9 +74,11 @@ BEGIN
                         `TicketType`,
                         `TicketStatus`,
                         `SettleFlag`,
-                        `TicketNo`
+                        `TicketNo`,
+						`GameRoundId`,
+						`IpAddress`
                     )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
 
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING 
@@ -92,7 +96,9 @@ BEGIN
         @TicketType,
         @TicketStatus,
         @SettleFlag,
-        @TicketNo;
+        @TicketNo,
+		@GameRoundId,
+		@IpAddress		;
         
 	SELECT ROW_COUNT();
     DEALLOCATE PREPARE stmt;
