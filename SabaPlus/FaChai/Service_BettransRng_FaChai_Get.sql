@@ -23,7 +23,7 @@ BEGIN
 						FC.`Ts`, 
 						FC.`GameID`, 
 						FC.`ValidBet`
-          FROM BettransRng_FaChai_", YYYYMM, " AS FC  WHERE  FC.`TicketNo` = ? AND SettleFlag = 2") ;
+          FROM BettransRng_FaChai_", YYYYMM, " AS FC  WHERE  FC.`TicketNo` = ? ") ;
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING @TicketNo;
     DEALLOCATE PREPARE stmt;
