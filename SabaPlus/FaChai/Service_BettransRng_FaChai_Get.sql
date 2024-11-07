@@ -18,10 +18,8 @@ BEGIN
 						FC.`RecordID`, 
 						FC.`MemberAccount`, 
 						FC.`TicketStatus`, 
-						FC.`Currency`, 
 						FC.`Bet`, 
 						FC.`Win` - ABS(FC.`Bet`) AS Win, 
-						FC.`NetWin`, 
 						FC.`Ts`, 
 						FC.`GameID`, 
 						FC.`ValidBet`
