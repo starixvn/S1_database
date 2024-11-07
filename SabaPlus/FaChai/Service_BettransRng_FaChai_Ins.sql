@@ -2,35 +2,36 @@
 DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_Ins`(
     IN YYYYMM VARCHAR(6),
-    IN Seq VARCHAR(64), 
-    IN OperatorCustId VARCHAR(32), 
-    IN GameId VARCHAR(50), 
-    IN Stake DECIMAL(20,6), 
+    IN Seq VARCHAR(64),
+    IN OperatorCustId VARCHAR(32),
+    IN GameId VARCHAR(50),
+    IN Stake DECIMAL(20,6),
     IN Payout DECIMAL(20,6),
     IN SettleDateUnix BIGINT,
     IN TicketType TINYINT,
     IN TicketStatus TINYINT,
-	IN IpAddress VARCHAR(25), 
-    IN TicketNo VARCHAR(200), 
-    IN GameRoundId VARCHAR(100), 
-	IN SettleFlag TINYINT,
-	IN ActualStake DECIMAL(20,6),
+    IN IpAddress VARCHAR(25),
+    IN TicketNo VARCHAR(200),
+    IN GameRoundId VARCHAR(100),
+    IN SettleFlag TINYINT,
+    IN ActualStake DECIMAL(20,6),
+    IN NetStake DECIMAL(20,6),
     OUT SQ BIGINT
-)
 /*
   Created: 20241031@Luke
 	DB: TSDB-TSDB
-	Task: Insert FaChai bet ticket
+	Task: Get FaChai bet ticket info from TicketNo
 
 	Revisions:
 		- 20241031@Luke: Initial
 */
+)
 BEGIN
     SET @RecordId = Seq;
-    SET @MemberAccount = OperatorCustId; 
+    SET @MemberAccount = OperatorCustId;
     SET @GameId = GameId;
-	SET @GameType = 'FaChai';
-    SET @Bet = CASE WHEN Stake > 0 THEN Stake ELSE ActualStake END;
+    SET @GameType = 'FaChai';
+    SET @Bet = Stake;
     SET @Win = Payout;
     SET @GameDate = FROM_UNIXTIME(SettleDateUnix);
     SET @CreateDate = NOW();
@@ -40,32 +41,32 @@ BEGIN
     SET @IpAddress = IpAddress;
     SET @TicketNo = TicketNo;
     SET @GameRoundId = GameRoundId;
-	SET @SettleFlag = SettleFlag;
-	SET @ValidBet = ActualStake;
-    
+    SET @SettleFlag = SettleFlag;
+    SET @ValidBet = CASE WHEN NetStake > 0 THEN NetStake ELSE ActualStake END;
+   
     SET @CMD = CONCAT("INSERT INTO BettransRng_FaChai_", YYYYMM,
                 " (
-					  `RecordID` ,
-					  `MemberAccount` ,
-					  `GameID` ,
-					  `GameType` ,
-					  `Bet` ,
-					  `Win` ,
-					  `GameDate` ,
-					  `CreateDate` ,
-					  `Ts` ,
-					  `TicketType` ,
-					  `TicketStatus` ,
-					  `IpAddress` ,
-					  `TicketNo` ,
-					  `GameRoundId` ,
-					  `SettleFlag`,
-					  `ValidBet`
+                      `RecordID` ,
+                      `MemberAccount` ,
+                      `GameID` ,
+                      `GameType` ,
+                      `Bet` ,
+                      `Win` ,
+                      `GameDate` ,
+                      `CreateDate` ,
+                      `Ts` ,
+                      `TicketType` ,
+                      `TicketStatus` ,
+                      `IpAddress` ,
+                      `TicketNo` ,
+                      `GameRoundId` ,
+                      `SettleFlag`,
+                      `ValidBet`
                     )
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
-
+ 
     PREPARE stmt FROM @CMD;
-    EXECUTE stmt USING 
+    EXECUTE stmt USING
         @RecordID,
         @MemberAccount,
         @GameID,
@@ -80,13 +81,12 @@ BEGIN
         @IpAddress,
         @TicketNo,
         @GameRoundId,
-		@SettleFlag,
-		@ValidBet;
-        
-	SELECT ROW_COUNT();
+        @SettleFlag,
+        @ValidBet;
+       
+    SELECT ROW_COUNT();
     DEALLOCATE PREPARE stmt;
-    
+   
     SET SQ = LAST_INSERT_ID();
-    
 END$$
 DELIMITER ;
