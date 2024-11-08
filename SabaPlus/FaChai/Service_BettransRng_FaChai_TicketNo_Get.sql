@@ -16,7 +16,26 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_TicketNo_Get`(
 BEGIN
     SET @TicketNo = TicketNo;
     
-    SET @CMD = CONCAT("SELECT * FROM BettransRng_FaChai_", YYYYMM, " WHERE TicketNo = ?;");
+    SET @CMD = CONCAT("SELECT `SQ`,
+						`RecordID`,
+                        `MemberAccount`,
+                        `GameID`,
+                        `GameType`,
+                        `Bet`,
+                        `Win`,
+                        `GameDate`,
+                        `CreateDate`,
+                        `Ts`,
+                        `TicketType`,
+                        `TicketStatus`,
+                        `CreateTime`,
+                        `UpdateTime`,
+                        `IpAddress`,
+                        `TicketNo`,
+                        `GameRoundId`,
+                        `SettleFlag`,
+                        `ValidBet` AS ActualStake
+			FROM BettransRng_FaChai_", YYYYMM, " WHERE TicketNo = ?;");
     
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING @TicketNo;
