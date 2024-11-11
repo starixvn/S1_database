@@ -18,8 +18,25 @@ BEGIN
     SET @EndTime = FROM_UNIXTIME(_EndTime);
     
     SET @CMD = CONCAT("
-            SELECT 
-				*
+            SELECT `SQ`,
+				`RecordID`,
+				`MemberAccount` AS OperatorCustId,
+				`GameID`,
+				`GameType`,
+				`Bet`,
+				`Win`,
+				`GameDate`,
+				`CreateDate`,
+				`Ts`,
+				`TicketType`,
+				`TicketStatus`,
+				`CreateTime`,
+				`UpdateTime`,
+				`IpAddress`,
+				`TicketNo`,
+				`GameRoundId`,
+				`SettleFlag`,
+				`ValidBet`
             FROM
                 ", @TableName, "
             WHERE
