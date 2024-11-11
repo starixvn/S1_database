@@ -3,3 +3,7 @@
 alter table BettransRng_JILI_202411 add GameRoundId varchar(100);
 
 alter table BettransRng_JILI_202411 add IpAddress varchar(25);
+alter table BettransRng_JILI_202411 add GameType varchar(50);
+
+drop index ix_round on BettransRng_JILI_202411;
+alter table BettransRng_JILI_202411 drop round;

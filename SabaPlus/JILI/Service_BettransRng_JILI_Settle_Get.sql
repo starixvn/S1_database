@@ -19,18 +19,18 @@ BEGIN
     
     SET @CMD = CONCAT(
         "SELECT 
-            OperatorCustId AS `Account`,
+            userId AS `Account`,
             TicketNo AS TransId,
-            GameId AS GameId,
-            IFNULL(SUM(IF(TicketType = 1, ABS(ActualStake), 0)), 0) AS Stake,
-            IFNULL(SUM(IF(TicketType = 4, ABS(NetStake), 0)), 0) AS ValidBet,
-            IFNULL(SUM(Payout), 0) - IFNULL(SUM(IF(TicketType = 1, ABS(ActualStake), 0)), 0) AS WinLostAmount,
-            UNIX_TIMESTAMP(MAX(SettleDate)) AS TransTime,
-            UNIX_TIMESTAMP(MAX(SettleDate)) AS SettleTime
+            Game AS GameId,
+            ABS(betAmount) AS Stake,
+            ABS(betAmount) AS ValidBet,
+            winloseAmount - ABS(betAmount) AS WinLostAmount,
+            TicketStatus AS TicketStatus,
+            wagersTime AS TransTime,
+            wagersTime AS SettleTime
         FROM BettransRng_JILI_", YYYYMM, " 
         WHERE TicketNo = ?
-        AND TicketType != 2
-        GROUP BY TicketNo, OperatorCustId, GameId"
+        AND TicketType != 2"
     );
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING @TransId;                    

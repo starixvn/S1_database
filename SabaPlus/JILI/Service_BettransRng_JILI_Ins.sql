@@ -41,7 +41,6 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_JILI_Ins`(
 
 BEGIN
     SET @reqId = Seq;
-    SET @round = CAST(GameRoundId AS SIGNED);
     SET @userId = OperatorCustId; 
     SET @currency = '' ;
     SET @game = GameId;
@@ -57,11 +56,11 @@ BEGIN
     SET @TicketNo = TicketNo;
     SET @IpAddress = IpAddress;
 	SET @GameRoundId = GameRoundId;
+	SET @GameType = GameType;
 	
     SET @CMD = CONCAT("INSERT INTO BettransRng_JILI_", YYYYMM,
                 " (
                         `reqId`,
-                        `round`,
                         `userId`,
                         `currency`,
                         `game`,
@@ -76,14 +75,14 @@ BEGIN
                         `SettleFlag`,
                         `TicketNo`,
 						`GameRoundId`,
-						`IpAddress`
+						`IpAddress`,
+						`GameType`
                     )
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
 
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING 
         @reqId,
-        @round,
         @userId,
         @currency,
         @game,
@@ -98,7 +97,9 @@ BEGIN
         @SettleFlag,
         @TicketNo,
 		@GameRoundId,
-		@IpAddress		;
+		@IpAddress	,
+		@GameType
+		;
         
 	SELECT ROW_COUNT();
     DEALLOCATE PREPARE stmt;
