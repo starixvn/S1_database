@@ -1,4 +1,4 @@
-﻿/*<info serverAlias="TSDB-Siebog" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+﻿/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DROP PROCEDURE IF EXISTS DBA_sp_Sync_General_Log;
 
 DELIMITER $$
