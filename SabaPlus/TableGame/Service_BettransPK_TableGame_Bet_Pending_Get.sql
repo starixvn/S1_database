@@ -1,6 +1,6 @@
 /*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DELIMITER $$
-CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_TableGame_Bet_Pending_Get`(
+CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransPK_TableGame_Bet_Pending_Get`(
     IN _BeginTime BIGINT,
     IN _EndTime BIGINT
 /*
@@ -13,7 +13,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_TableGame_Bet_Pending_Ge
 */    
 )
 BEGIN
-    SET @TableName = CONCAT("BettransRng_TableGame_",  DATE_FORMAT(FROM_UNIXTIME(_BeginTime), '%Y%m'));
+    SET @TableName = CONCAT("BettransPK_TableGame_",  DATE_FORMAT(FROM_UNIXTIME(_BeginTime), '%Y%m'));
 	SET @BeginTime = FROM_UNIXTIME(_BeginTime);
     SET @EndTime = FROM_UNIXTIME(_EndTime);
     
