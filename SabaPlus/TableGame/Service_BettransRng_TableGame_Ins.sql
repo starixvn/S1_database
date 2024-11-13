@@ -1,6 +1,6 @@
 /*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DELIMITER $$
-CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransPK_TableGame_Ins`(
+CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_TableGame_Ins`(
     IN YYYYMM VARCHAR(6),
     IN Seq VARCHAR(64), 
     IN OperatorCustId VARCHAR(32), 
@@ -65,7 +65,7 @@ BEGIN
     SET @TicketStatus = TicketStatus;
     SET @SettleFlag = SettleFlag;
 
-    SET @CMD = CONCAT("INSERT INTO BettransPK_TableGame_", YYYYMM,
+    SET @CMD = CONCAT("INSERT INTO BettransRng_TableGame_", YYYYMM,
                 " (
                         `Seq`,
                         `OperatorCustId`,
