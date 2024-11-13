@@ -1,3 +1,10 @@
+/*<info serverAlias="TSDB-TSDB" </info>*/
+
+/*
+  Created: 20241112@Luke
+	DB: TSDB-TSDB
+	Task: insert data table auto_gen_tablelist
+*/
 INSERT INTO Siebog.auto_gen_tablelist(
 	table_schema,
     table_name,
