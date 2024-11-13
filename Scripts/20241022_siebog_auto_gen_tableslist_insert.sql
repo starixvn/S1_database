@@ -1,5 +1,4 @@
-/*<info serverAlias="TSDB-TSDB" </info>*/
-
+/*<info serverAlias="TSDB-TSDB" databaseType="2"></info>*/
 /*
   Created: 20241112@Luke
 	DB: TSDB-TSDB
