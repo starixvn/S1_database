@@ -18,7 +18,7 @@ BEGIN
 						FC.`RecordID`, 
 						FC.`MemberAccount`, 
 						FC.`TicketStatus`, 
-						FC.`Bet`, 
+						IF(FC.`TicketType` = 4, ABS(FC.`ValidBet`), 0) AS Bet, 
 						FC.`Win` - ABS(FC.`Bet`) AS Win, 
 						FC.`Ts`, 
 						FC.`GameID`, 
