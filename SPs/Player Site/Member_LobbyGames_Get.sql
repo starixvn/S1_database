@@ -23,7 +23,7 @@ BEGIN
 			TL.TpName,
 			LHS.TpGameIdNo,
             TL.DisplayName AS DisplayText,
-            TGT.CategoryId,
+            TC.Name AS TpCategory,
 			TGI.Name AS ProductName,
 			LHS.CurrencyGameName,
 			LHS.IconType,
@@ -36,6 +36,7 @@ BEGIN
 	INNER JOIN TpList AS TL ON TL.Id = TGI.TpId
 	INNER JOIN LobbyCategory AS LC ON LC.Id = LHS.LobbyCategory
     INNER JOIN TpGameType AS TGT ON TGT.TpId = TL.Id
+     INNER JOIN TpCategory AS TC ON TC.Id = TGT.CategoryId
 	WHERE LHS.SiteId = _SiteId
 	  AND LHS.CurrencyId = _CurrencyId 
 	  AND JSON_CONTAINS(TGI.LobbyCategoryIds, _LobbyCategoryIds);
