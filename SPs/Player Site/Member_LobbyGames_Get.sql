@@ -1,0 +1,35 @@
+CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_LobbyGames_Get`(
+    IN _SiteId INT,
+    IN _CurrencyId INT,
+    IN _LobbyCategoryIds NVARCHAR(20)
+)
+/*
+  Created: 20241118@Brian.Nguyen
+        DB: TSDB-TSDB
+        Task: Get LobbyGames 
+        Revisions:
+                - 20241118@Brian.Nguyen: Get LobbyGames
+*/
+BEGIN
+	SELECT  LHS.LobbyCategory AS LobbyCategoryId,
+			LC.Name AS LobbyCategory,
+			TGI.TpId,
+			TGI.TpGameType,
+			TGI.GameId,
+			TL.TpName,
+			LHS.TpGameIdNo,
+			TGI.Name AS ProductName,
+			LHS.CurrencyGameName,
+			LHS.IconType,
+			LHS.IconStartTime,
+			LHS.IconEndTime,
+			LHS.Sort,
+			TGI.BetType
+	FROM LobbyHeaderSetting AS LHS
+	INNER JOIN TpGameId AS TGI ON TGI.No = LHS.TpGameIdNo
+	INNER JOIN TpList AS TL ON TL.Id = TGI.TpId
+	INNER JOIN LobbyCategory AS LC ON LC.Id = LHS.LobbyCategory
+	WHERE LHS.SiteId = _SiteId
+	  AND LHS.CurrencyId = _CurrencyId 
+	  AND JSON_CONTAINS(TGI.LobbyCategoryIds, _LobbyCategoryIds);
+END
