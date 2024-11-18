@@ -1,3 +1,6 @@
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+DELIMITER $$
+
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_LobbyGames_Get`(
     IN _SiteId INT,
     IN _CurrencyId INT,
@@ -32,4 +35,5 @@ BEGIN
 	WHERE LHS.SiteId = _SiteId
 	  AND LHS.CurrencyId = _CurrencyId 
 	  AND JSON_CONTAINS(TGI.LobbyCategoryIds, _LobbyCategoryIds);
-END
+END$$
+DELIMITER ;
