@@ -4,7 +4,8 @@ DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_LobbyGames_Get`(
     IN _SiteId INT,
     IN _CurrencyId INT,
-    IN _LobbyCategoryIds NVARCHAR(20)
+    IN _LobbyCategoryIds NVARCHAR(20),
+    IN _LangId NVARCHAR(20)
     /*
   Created: 20241118@Brian.Nguyen
         DB: TSDB-TSDB
@@ -26,7 +27,7 @@ BEGIN
             TPGI.CreateAt AS LaunchDate,
             TL.DisplayName AS DisplayText,
             TC.Name AS TpCategory,
-			TGI.Name AS ProductName,
+			TPGI.Name AS ProductName,
 			LHS.CurrencyGameName,
 			LHS.IconType,
 			LHS.IconStartTime,
@@ -42,6 +43,7 @@ BEGIN
     INNER JOIN TpGameIdInfo AS TPGI ON TPGI.TpGameIdNo = TGI.No
 	WHERE LHS.SiteId = _SiteId
 	  AND LHS.CurrencyId = _CurrencyId 
+      AND TPGI.Lang = _LangId
 	  AND JSON_CONTAINS(TGI.LobbyCategoryIds, _LobbyCategoryIds);
 END$$
 DELIMITER ;
