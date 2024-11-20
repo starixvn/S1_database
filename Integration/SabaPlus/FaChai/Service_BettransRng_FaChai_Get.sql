@@ -18,12 +18,11 @@ BEGIN
 						FC.`RecordID`, 
 						FC.`MemberAccount`, 
 						FC.`TicketStatus`, 
-						IF(FC.`TicketType` = 4, ABS(FC.`ValidBet`), 0) AS Bet, 
-						FC.`Win` - ABS(FC.`Bet`) AS Win, 
+						FC.`Win` - ABS(FC.`ValidBet`) AS NetWin, 
 						FC.`Ts`, 
 						FC.`GameID`, 
 						FC.`ValidBet`
-          FROM BettransRng_FaChai_", YYYYMM, " AS FC  WHERE  FC.`TicketNo` = ? ") ;
+          FROM BettransRng_FaChai_", YYYYMM, " AS FC  WHERE FC.`TicketType` = 4 AND FC.`TicketNo` = ? ") ;
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING @TicketNo;
     DEALLOCATE PREPARE stmt;
