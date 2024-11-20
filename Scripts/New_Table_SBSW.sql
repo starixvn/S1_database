@@ -11,3 +11,7 @@ CREATE TABLE `Bettrans_SBSW_Payload_202411` (
 `Response` json DEFAULT NULL,
 PRIMARY KEY (`SQ`) )
 ENGINE=InnoDB AUTO_INCREMENT=202411000039029 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='SBSW Payload (Seamless Request記錄)'
+
+
+INSERT INTO auto_gen_tablelist (table_schema, table_name, create_interval, adjust_increment_start)
+VALUES('TSDB', 'Bettrans_SBSW_Payload', 'Monthly',1);
