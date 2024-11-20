@@ -14,6 +14,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_HotMatchDataList_Get`(
                 - 20241204@Levi.vu: Remove get Top 10
 */
 )
+
 BEGIN
  SELECT LeagueName AS SportLeaguesTitle,
            MatchId,
