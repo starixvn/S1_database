@@ -1,14 +1,14 @@
 /*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DELIMITER $$
 USE `TSDB`$$
-CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_SabaMatch_Set`(IN Matches JSON)
+CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_SabaMatch_Set`(IN Matches JSON
 /*
   Created: 20241120@Levi.Vu
         DB: TSDB-TSDB
         Task: Hot match
         Revisions:
                 - 20241120@Levi.Vu: Insert Hot match data
-*/
+*/)
 BEGIN
 
  CREATE TEMPORARY TABLE TempMatches (

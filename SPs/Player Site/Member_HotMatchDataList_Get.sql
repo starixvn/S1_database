@@ -2,14 +2,16 @@
 
 DELIMITER $$
 USE `TSDB`$$
-CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_HotMatchDataList_Get`()
-/*
+CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_HotMatchDataList_Get`(
+    /*
   Created: 20241120@Levi.Vu
         DB: TSDB-TSDB
         Task: Hot match
         Revisions:
                 - 20241120@Levi.Vu: Get hot Match
 */
+)
+
 BEGIN
  SELECT LeagueName AS SportLeaguesTitle,
            MatchId,

@@ -5,14 +5,14 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_HotGames_Get_V3`(
     IN _Top INT, 
     IN _TpCategory VARCHAR(255), -- Comma-separated list of category IDs, e.g., '1,2,3'
     IN _CurrencyId SMALLINT UNSIGNED
-)
+
 /*
   Created: 20241113@Brian.Nguyen
         DB: TSDB-TSDB
         Task: Get HotGames 
         Revisions:
                 - 20241113@Brian.Nguyen: Get hot games follow top and tpcategory
-*/
+*/)
 BEGIN  
     SELECT 
         t.TpId,
