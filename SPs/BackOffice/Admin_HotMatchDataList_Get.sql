@@ -17,7 +17,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_HotMatchDataList_Get`(
 BEGIN
     SELECT COUNT(*) INTO _RowCount
     FROM HotMatchInfo
-    WHERE (_Status = 2 OR Status = _Status) and (_LeagueId = 0 OR LeagueId = _LeagueId) and  KickOffTime >= DATE_SUB(CURDATE(), INTERVAL 14 DAY);
+    WHERE (_Status = 2 OR Status = _Status) and (_LeagueId = 0 OR LeagueId = _LeagueId) and  KickOffTime >= DATE_SUB(NOW(), INTERVAL 14 DAY);
 
     IF _RowCount = 0 THEN
         SET _TotalPages = 0;
@@ -36,7 +36,7 @@ BEGIN
            LastUpdateUser AS LastUpdateUser,
            LastUpdateTime AS LastUpdateTime
     FROM HotMatchInfo
-    WHERE (_Status = 2 OR Status = _Status) and (_LeagueId = 0 OR LeagueId = _LeagueId)  and  KickOffTime >= DATE_SUB(CURDATE(), INTERVAL 14 DAY)
+    WHERE (_Status = 2 OR Status = _Status) and (_LeagueId = 0 OR LeagueId = _LeagueId)  and  KickOffTime >= DATE_SUB(NOW(), INTERVAL 14 DAY)
     ORDER BY KickOffTime DESC
     LIMIT _StartIndex, _PageSize;
 END$$
