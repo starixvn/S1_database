@@ -7,3 +7,14 @@ alter table BettransRng_JILI_202411 add GameType varchar(50);
 
 drop index ix_round on BettransRng_JILI_202411;
 alter table BettransRng_JILI_202411 drop round;
+
+-- PP
+
+
+ALTER TABLE BettransRng_PP_202411 
+ADD COLUMN UpdateTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
+
+ALTER TABLE BettransLC_PP_202411 
+ADD COLUMN UpdateTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+
