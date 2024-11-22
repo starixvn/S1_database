@@ -27,7 +27,7 @@ BEGIN
             TPGI.CreateAt AS LaunchDate,
             TL.DisplayName AS DisplayText,
             TC.Name AS TpCategory,
-			TPGI.Name AS ProductName,
+			TPGI.Name AS GameName,
 			LHS.CurrencyGameName,
 			LHS.IconType,
 			LHS.IconStartTime,
