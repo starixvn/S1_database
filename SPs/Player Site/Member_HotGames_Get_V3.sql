@@ -20,7 +20,7 @@ BEGIN
         t.TpGameType,
         t.TpCategory,
         t.GameName,
-        t.TpName,
+        TP.DisplayName AS TPName,
         t.Sort,
         t.TopCategory
     FROM (
@@ -34,6 +34,7 @@ BEGIN
             AND FIND_IN_SET(t.TpCategory, _TpCategory) > 0
             AND t.CurrencyId = _CurrencyId
     ) t
+    INNER JOIN TSDB.TpList AS TP ON t.TpId = TP.Id
     WHERE 
         t.rn <= _Top
     ORDER BY 
