@@ -32,7 +32,7 @@ BEGIN
     SELECT 
         SG.Id AS SlotGameId,
         SG.TpId,
-        STL.TpName,
+        TL.DisplayName AS TpName,
         SG.TypeId,
         SG.GameId,
         SG.AppId,
