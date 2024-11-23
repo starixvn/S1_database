@@ -21,6 +21,7 @@ BEGIN
         t.TpCategory,
         t.GameName,
         TP.DisplayName AS TPName,
+        TP.TPName AS TPNameKey,
         t.Sort,
         t.TopCategory
     FROM (
