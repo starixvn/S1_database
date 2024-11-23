@@ -17,7 +17,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_SlotGame_Get`(
 )
 
 BEGIN
-	 DROP TEMPORARY TABLE IF EXISTS Search_Table;
+	  DROP TEMPORARY TABLE IF EXISTS Search_Table;
     
     CREATE TEMPORARY TABLE IF NOT EXISTS Search_Table AS 
     (
@@ -32,7 +32,6 @@ BEGIN
     SELECT 
         SG.Id AS SlotGameId,
         SG.TpId,
-        TL.DisplayName AS TpName,
         SG.TypeId,
         SG.GameId,
         SG.AppId,
