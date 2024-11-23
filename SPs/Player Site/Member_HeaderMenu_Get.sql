@@ -15,25 +15,26 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_HeaderMenu_Get`(
 )
 
 BEGIN
-	 SELECT  LHS.LobbyCategory AS LobbyCategoryId,
+	SELECT  LHS.LobbyCategory AS LobbyCategoryId,
                 LC.Name AS LobbyCategory,
                 TGI.TpId,
                 TGI.TpGameType,
                 TGI.GameId,
                 TL.TpName,
                 LHS.TpGameIdNo,
-                TGI.Name AS ProductName,
+                TGI.Name AS GameName,
                 LHS.CurrencyGameName,
                 LHS.IconType,
                 LHS.IconStartTime,
                 LHS.IconEndTime,
-                LHS.Sort
+                LHS.Sort,
+                TGI.BetType
         FROM LobbyHeaderSetting AS LHS
         INNER JOIN TpGameId AS TGI ON TGI.No = LHS.TpGameIdNo
         INNER JOIN TpList AS TL ON TL.Id = TGI.TpId
         INNER JOIN LobbyCategory AS LC ON LC.Id = LHS.LobbyCategory
         WHERE LHS.SiteId = _SiteId
           AND LHS.CurrencyId = _CurrencyId 
-          AND LHS.Status IN (SELECT * FROM JSON_TABLE(StatusJson, '$[*]' COLUMNS(`Status` INT PATH '$')) AS StatusList)  ;
+          AND LHS.Status IN (SELECT * FROM JSON_TABLE(StatusJson, '$[*]' COLUMNS(`Status` INT PATH '$')) AS StatusList);
 END$$
 DELIMITER ;
