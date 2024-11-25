@@ -9,9 +9,9 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_HotMatchDataList_Get`(
         Task: Hot match
         Revisions:
                 - 20241120@Levi.Vu: Get hot Match
+                - 20241125@Levi.vu: Get TpId and GameId
 */
 )
-
 BEGIN
  SELECT LeagueName AS SportLeaguesTitle,
            MatchId,
@@ -22,7 +22,9 @@ BEGIN
            AwayOdds, 
            Handicap,
            HomeIconUrl,
-           AwayIconUrl
+           AwayIconUrl,
+           tpId,
+           gameId
     FROM HotMatchInfo
     WHERE Status = 1 AND NOW() BETWEEN StartTime AND EndTime
     ORDER BY KickOffTime;

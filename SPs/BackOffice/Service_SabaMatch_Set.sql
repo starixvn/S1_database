@@ -28,7 +28,9 @@ BEGIN
         AwayOdds VARCHAR(50) NULL,
         Handicap VARCHAR(50) NULL,
         Sort INT NULL,
-        CreateTime DATETIME NOT NULL
+        CreateTime DATETIME NOT NULL,
+        TpId INT NULL,
+        GameId INT NULL
     );
 
     INSERT INTO TempMatches
@@ -49,7 +51,9 @@ BEGIN
         AwayOdds,
         Handicap,
         Sort,
-        CreateTime
+        CreateTime,
+        TpId,
+        GameId
     FROM JSON_TABLE(
         Matches,
         '$[*]' COLUMNS (
@@ -69,7 +73,9 @@ BEGIN
             AwayOdds VARCHAR(50) PATH '$.AwayOdds',
             Handicap VARCHAR(50) PATH '$.Handicap',
             Sort INT PATH '$.Sort',
-            CreateTime DATETIME PATH '$.CreateTime'
+            CreateTime DATETIME PATH '$.CreateTime',
+            TpId INT PATH '$.TpId',
+            GameId INT PATH '$.GameId'
         )
     ) AS ParsedJson;
 
@@ -92,7 +98,9 @@ BEGIN
         Sort,
         CreateTime,
         StartTime,
-        EndTime
+        EndTime,
+        TpId,
+        GameId
     )
     SELECT 
         MatchId,
@@ -113,7 +121,9 @@ BEGIN
         Sort,
         CreateTime,
         now(),
-        DATE_ADD(KickOffTime, INTERVAL 2 HOUR)
+        DATE_ADD(KickOffTime, INTERVAL 2 HOUR),
+        TpId,
+        GameId
     FROM TempMatches
     ON DUPLICATE KEY UPDATE
         LastUpdateTime = VALUES(LastUpdateTime),
