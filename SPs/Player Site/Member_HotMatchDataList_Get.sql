@@ -10,6 +10,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_HotMatchDataList_Get`(
         Revisions:
                 - 20241120@Levi.Vu: Get hot Match
                 - 20241125@Levi.vu: Get TpId and GameId
+                - 20241127@Levi.vu: Get Top 10
 */
 )
 BEGIN
@@ -27,7 +28,8 @@ BEGIN
            gameId
     FROM HotMatchInfo
     WHERE Status = 1 AND NOW() BETWEEN StartTime AND EndTime
-    ORDER BY KickOffTime;
+    ORDER BY KickOffTime
+    LIMIT 10;
 END$$
 
 DELIMITER ;
