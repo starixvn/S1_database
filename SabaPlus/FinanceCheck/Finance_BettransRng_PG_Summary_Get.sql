@@ -31,7 +31,7 @@ BEGIN
         FROM
             BettransRng_PG_", YYYYMM, " AS BPM
         LEFT JOIN 
-            TpCustInfo AS TCI ON TCI.TpUserName = CONVERT(BPM.OperatorCustId USING ASCII) AND TCI.TpId = 67
+            TpCustInfo AS TCI ON TCI.TpUserName = CONVERT(BPM.OperatorCustId USING ASCII) AND TCI.TpId = 14
         LEFT JOIN 
             Customer AS CU ON TCI.CustId = CU.CustId
         WHERE
