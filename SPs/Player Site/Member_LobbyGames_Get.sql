@@ -17,33 +17,28 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_LobbyGames_Get`(
 )
 
 BEGIN
-	SELECT  LHS.LobbyCategory AS LobbyCategoryId,
+	SELECT  LC.Id AS LobbyCategoryId,
 			LC.Name AS LobbyCategory,
 			TGI.TpId,
 			TGI.TpGameType,
 			TGI.GameId,
 			TL.TpName,
-			LHS.TpGameIdNo,
+			TPGI.TpGameIdNo,
             TPGI.CreateAt AS LaunchDate,
             TL.DisplayName AS DisplayText,
             TC.Name AS TpCategory,
-			TPGI.Name AS GameName,
-			LHS.CurrencyGameName,
-			LHS.IconType,
-			LHS.IconStartTime,
-			LHS.IconEndTime,
-			LHS.Sort,
+			TPGI.Name AS GameName,			
 			TGI.BetType
-	FROM LobbyHeaderSetting AS LHS
-	INNER JOIN TpGameId AS TGI ON TGI.No = LHS.TpGameIdNo
+	FROM TpGameId AS TGI 
+    INNER JOIN TpGameIdInfo AS TPGI ON TPGI.TpGameIdNo = TGI.No
 	INNER JOIN TpList AS TL ON TL.Id = TGI.TpId
-	INNER JOIN LobbyCategory AS LC ON LC.Id = LHS.LobbyCategory
+	INNER JOIN LobbyCategory AS LC ON LC.Id = TGI.ImgLobbyCategoryId
     INNER JOIN TpGameType AS TGT ON TGT.TpId = TL.Id
 	INNER JOIN TpCategory AS TC ON TC.Id = TGT.CategoryId
-    INNER JOIN TpGameIdInfo AS TPGI ON TPGI.TpGameIdNo = TGI.No
-	WHERE LHS.SiteId = _SiteId
-	  AND LHS.CurrencyId = _CurrencyId 
-      AND TPGI.Lang = _LangId
-	  AND JSON_CONTAINS(TGI.LobbyCategoryIds, _LobbyCategoryIds);
+    INNER JOIN TpGameTypeCurrency AS TGTC ON TGTC.TpGameType = TGI.TpGameType    
+	WHERE TPGI.Lang = _LangId
+	  AND JSON_CONTAINS(TGI.LobbyCategoryIds, _LobbyCategoryIds)
+      AND TGTC.SiteId = _SiteId
+      AND TGTC.CurrencyId = _CurrencyId;
 END$$
 DELIMITER ;
