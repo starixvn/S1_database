@@ -7,10 +7,22 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_HotMatch_Status_Set`(
         Task: Hot match
         Revisions:
                 - 20241120@Levi.Vu: Update HotMatch status by EndTime
+                - 20241204@Levi.Vu: Update status by Top 10
 */)
 
 BEGIN
-     UPDATE HotMatchInfo SET STATUS = 0 where NOW() > EndTime;
+     UPDATE HotMatchInfo
+     SET STATUS = 0
+     WHERE NOW() > EndTime
+     OR MatchId NOT IN (
+          SELECT MatchId 
+          FROM (
+               SELECT MatchId 
+               FROM HotMatchInfo 
+               ORDER BY KickOffTime DESC 
+               LIMIT 10
+          ) AS TopTen
+);
 END$$
 DELIMITER ;
 

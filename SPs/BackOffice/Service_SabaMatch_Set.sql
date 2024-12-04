@@ -136,5 +136,4 @@ BEGIN
 END$$
 
 DELIMITER ;
-;
 
