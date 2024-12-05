@@ -33,7 +33,7 @@ BEGIN
     INNER JOIN TpGameIdInfo AS TPGI ON TPGI.TpGameIdNo = TGI.No
 	INNER JOIN TpList AS TL ON TL.Id = TGI.TpId
 	INNER JOIN LobbyCategory AS LC ON LC.Id = TGI.ImgLobbyCategoryId
-    INNER JOIN TpGameType AS TGT ON TGT.TpId = TL.Id
+    INNER JOIN TpGameType AS TGT ON TGT.TpId = TL.Id AND TGT.Type = TGI.TpGameType
 	INNER JOIN TpCategory AS TC ON TC.Id = TGT.CategoryId
     INNER JOIN TpGameTypeCurrency AS TGTC ON TGTC.TpGameType = TGI.TpGameType    
 	WHERE TPGI.Lang = _LangId
