@@ -27,7 +27,7 @@ BEGIN
     FROM (
         SELECT 
             t.*,
-            ROW_NUMBER() OVER (PARTITION BY t.TpCategory ORDER BY t.Sort DESC) AS rn
+            ROW_NUMBER() OVER (PARTITION BY t.TpCategory ORDER BY t.Sort ASC) AS rn
         FROM 
             TSDB.HotGames t
         WHERE 
@@ -38,8 +38,7 @@ BEGIN
     INNER JOIN TSDB.TpList AS TP ON t.TpId = TP.Id
     WHERE 
         t.rn <= _Top
-    ORDER BY 
-        t.TpCategory, 
-        t.Sort DESC;
+    ORDER BY  
+        t.Sort ASC;
 END$$
 DELIMITER ;
