@@ -30,10 +30,12 @@ BEGIN
             ROW_NUMBER() OVER (PARTITION BY t.TpCategory ORDER BY t.Sort ASC) AS rn
         FROM 
             TSDB.HotGames t
+            INNER JOIN TSDB.TpGameId AS TGI ON TGI.GameId = t.GameId
         WHERE 
             t.SiteId = _SiteId
             AND FIND_IN_SET(t.TpCategory, _TpCategory) > 0
             AND t.CurrencyId = _CurrencyId
+            AND TGI.Status > 0
     ) t
     INNER JOIN TSDB.TpList AS TP ON t.TpId = TP.Id
     WHERE 
