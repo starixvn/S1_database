@@ -39,6 +39,7 @@ BEGIN
 	WHERE TPGI.Lang = _LangId
 	  AND JSON_CONTAINS(TGI.LobbyCategoryIds, _LobbyCategoryIds)
       AND TGTC.SiteId = _SiteId
-      AND TGTC.CurrencyId = _CurrencyId;
+      AND TGTC.CurrencyId = _CurrencyId
+       AND TGI.Status > 0;
 END$$
 DELIMITER ;
