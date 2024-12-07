@@ -8,7 +8,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_HotMatch_Status_Set`(
         Revisions:
                 - 20241120@Levi.Vu: Update HotMatch status by EndTime
                 - 20241204@Levi.Vu: Update status by Top 10
-                - 20241206@Levi.Vu: Update status by Top 10 nearest KickOffTime
+                - 20241206@Levi.Vu: Update status by Top 10 nearest KickOffTime, MatchId
 */)
 
 BEGIN
@@ -16,12 +16,13 @@ BEGIN
      SELECT MatchId
      FROM HotMatchInfo
      WHERE KickOffTime IS NOT NULL AND KickOffTime > NOW()
-     ORDER BY KickOffTime ASC
+     ORDER BY KickOffTime ASC, matchId DESC
      LIMIT 10;
 
      
     UPDATE HotMatchInfo
-    SET STATUS = CASE
+    SET  LastUpdateUser = 'Service',
+    STATUS = CASE
     WHEN NOW() > EndTime OR MatchId NOT IN (SELECT MatchId FROM ClosestTenMatches) THEN 0
     ELSE 1
 END;
