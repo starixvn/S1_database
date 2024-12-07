@@ -35,6 +35,6 @@ BEGIN
         INNER JOIN LobbyCategory AS LC ON LC.Id = LHS.LobbyCategory
         WHERE LHS.SiteId = _SiteId
           AND LHS.CurrencyId = _CurrencyId 
-          AND LHS.Status IN (SELECT * FROM JSON_TABLE(StatusJson, '$[*]' COLUMNS(`Status` INT PATH '$')) AS StatusList);
+          AND EXISTS (SELECT 1 FROM JSON_TABLE(StatusJson, '$[*]' COLUMNS(`Status` INT PATH '$')) AS StatusList WHERE StatusList.`Status` = LHS.`Status`);
 END$$
 DELIMITER ;
