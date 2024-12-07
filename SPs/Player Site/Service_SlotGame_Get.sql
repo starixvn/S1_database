@@ -1,12 +1,10 @@
-/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DELIMITER $$
-
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_SlotGame_Get`(
     IN SiteId INT,
     IN CurrencyId INT,
     IN DeviceType INT,
     IN StatusJson JSON
-
+ 
     /*
   Created: 20241122@Brian.Nguyen
         DB: TSDB-TSDB
@@ -15,7 +13,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_SlotGame_Get`(
                 - 20241122@Brian.Nguyen: Get SlotGame
 */
 )
-
+ 
 BEGIN
 	 SELECT 
 		SG.Id AS SlotGameId,
@@ -58,7 +56,7 @@ BEGIN
 	WHERE
 		S.SiteId = SiteId
 		AND S.CurrencyId = CurrencyId 
-		AND S.`Status` IN (SELECT * FROM JSON_TABLE(StatusJson, '$[*]' COLUMNS(`Status` INT PATH '$')) AS StatusList)
+		AND EXISTS (SELECT 1 FROM JSON_TABLE(StatusJson, '$[*]' COLUMNS(`Status` INT PATH '$')) AS StatusList WHERE StatusList.`Status` = S.`Status`)
 		AND (STL.`Status` = 1 OR (STL.`Status` IS NULL AND TL.`Status` = 1))
 		AND SG.Device IN (0, DeviceType)
 	GROUP BY 
