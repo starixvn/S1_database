@@ -37,7 +37,7 @@ BEGIN
            LastUpdateTime AS LastUpdateTime
     FROM HotMatchInfo
     WHERE (_Status = 2 OR Status = _Status) and (_LeagueId = 0 OR LeagueId = _LeagueId)  and  KickOffTime >= DATE_SUB(NOW(), INTERVAL 14 DAY)
-    ORDER BY KickOffTime DESC
+    ORDER BY KickOffTime DESC, MatchId ASC
     LIMIT _StartIndex, _PageSize;
 END$$
 DELIMITER ;
