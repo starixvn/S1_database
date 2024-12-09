@@ -14,7 +14,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_HotGames_Get_V3`(
                 - 20241113@Brian.Nguyen: Get hot games follow top and tpcategory
 */)
 BEGIN  
-    SELECT 
+   SELECT 
         t.TpId,
         t.GameId,
         t.TpGameType,
@@ -30,12 +30,14 @@ BEGIN
             ROW_NUMBER() OVER (PARTITION BY t.TpCategory ORDER BY t.Sort ASC) AS rn
         FROM 
             TSDB.HotGames t
-            INNER JOIN TSDB.TpGameId AS TGI ON TGI.GameId = t.GameId
+            LEFT JOIN TSDB.TpGameId AS TGI ON TGI.GameId = t.GameId
+			LEFT JOIN TSDB.SlotGame AS SL ON SL.GameId = t.GameId
+            LEFT JOIN TSDB.SlotGameStatus AS SLT ON SLT.SlotGameId = SL.Id AND SLT.SiteId = _SiteId AND SLT.CurrencyId = _CurrencyId
         WHERE 
             t.SiteId = _SiteId
             AND FIND_IN_SET(t.TpCategory, _TpCategory) > 0
             AND t.CurrencyId = _CurrencyId
-            AND TGI.Status > 0
+            AND ( TGI.Status > 0 OR SLT.Status > 0)
     ) t
     INNER JOIN TSDB.TpList AS TP ON t.TpId = TP.Id
     WHERE 
