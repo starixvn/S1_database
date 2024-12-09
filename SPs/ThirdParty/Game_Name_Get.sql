@@ -14,8 +14,10 @@ BEGIN
     SELECT Tpid, GameId, BetType, 'en' AS Lang, Name
     FROM TpGameId
     UNION
-    SELECT Tpid, GameCasinoId  AS GameId, '' AS 'BetType', Lang, Name
-    FROM GameCasinoInfo;
+    SELECT GC.TpId, GC.AppId  AS GameId, '' AS 'BetType', GCI.Lang, GCI.Name
+    FROM GameCasinoInfo AS GCI
+            INNER JOIN
+        SlotGame AS GC ON GCI.GameCasinoId = GC.Id;
     
 END $$
 DELIMITER $$;
