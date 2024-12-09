@@ -30,8 +30,8 @@ BEGIN
             ROW_NUMBER() OVER (PARTITION BY t.TpCategory ORDER BY t.Sort ASC) AS rn
         FROM 
             TSDB.HotGames t
-            LEFT JOIN TSDB.TpGameId AS TGI ON TGI.GameId = t.GameId
-			LEFT JOIN TSDB.SlotGame AS SL ON SL.GameId = t.GameId
+            LEFT JOIN TSDB.TpGameId AS TGI ON TGI.GameId = t.GameId AND TGI.TpId = t.TpId
+			LEFT JOIN TSDB.SlotGame AS SL ON SL.GameId = t.GameId AND SL.TpId = t.TpId
             LEFT JOIN TSDB.SlotGameStatus AS SLT ON SLT.SlotGameId = SL.Id AND SLT.SiteId = _SiteId AND SLT.CurrencyId = _CurrencyId
         WHERE 
             t.SiteId = _SiteId
