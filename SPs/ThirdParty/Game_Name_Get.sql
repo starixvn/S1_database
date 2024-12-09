@@ -11,10 +11,11 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Game_Name_Get`(
 */
 )
 BEGIN
-    SELECT Tpid, GameId, BetType, 'en' AS Lang, Name
-    FROM TpGameId
+    SELECT tp.Tpid, tp.GameId, BetType, tpi.Lang, tpi.Name
+    FROM TpGameId AS tp INNER JOIN TpGameIdInfo AS tpi
+    ON tp.TpId=tpi.TpId AND tp.No=tpi.TpGameIdNo
     UNION
-    SELECT GC.TpId, GC.AppId  AS GameId, '' AS 'BetType', GCI.Lang, GCI.Name
+    SELECT GC.TpId, GC.GameId, '' AS 'BetType', GCI.Lang, GCI.Name
     FROM GameCasinoInfo AS GCI
             INNER JOIN
         SlotGame AS GC ON GCI.GameCasinoId = GC.Id;
