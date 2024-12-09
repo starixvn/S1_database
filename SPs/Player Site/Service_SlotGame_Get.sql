@@ -1,3 +1,4 @@
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_SlotGame_Get`(
     IN SiteId INT,
