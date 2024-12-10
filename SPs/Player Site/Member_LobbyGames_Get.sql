@@ -40,6 +40,8 @@ BEGIN
 	  AND JSON_CONTAINS(TGI.LobbyCategoryIds, _LobbyCategoryIds)
       AND TGTC.SiteId = _SiteId
       AND TGTC.CurrencyId = _CurrencyId
-       AND TGI.Status > 0;
+	  AND TGI.Status > 0
+	ORDER BY  
+	  TPGI.CreateAt DESC ,TGI.GameId DESC;
 END$$
 DELIMITER ;

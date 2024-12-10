@@ -61,6 +61,8 @@ BEGIN
 		AND (STL.`Status` = 1 OR (STL.`Status` IS NULL AND TL.`Status` = 1))
 		AND SG.Device IN (0, DeviceType)
 	GROUP BY 
-		SG.Id;
+        SG.CreateAt, SG.Id
+	ORDER BY  
+        SG.CreateAt DESC ,SG.Id DESC;
 END$$
 DELIMITER ;
