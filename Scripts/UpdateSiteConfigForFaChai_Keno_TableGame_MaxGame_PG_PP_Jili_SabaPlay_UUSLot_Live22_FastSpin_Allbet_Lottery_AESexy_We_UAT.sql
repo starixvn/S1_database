@@ -2,9 +2,9 @@
 /*
   Created: 20241126@Los
         DB: TSDB-TSDB
-        Task: Update TP Config for FaChai/Keno
+        Task: Update TP Config for UpdateSiteConfigForFaChai_Keno_TableGame_MaxGame_PG_PP_Jili_SabaPlay_UUSLot_Live22_FastSpin_Allbet_Lottery_AESexy_We_UAT
         Revisions:
-                - 20241126@George.Phung: Update TP Config for FaChai/Keno
+                - 20241126@Los: UpdateSiteConfigForFaChai_Keno_TableGame_MaxGame_PG_PP_Jili_SabaPlay_UUSLot_Live22_FastSpin_Allbet_Lottery_AESexy_We_UAT
 */
 UPDATE SiteConfig
 SET
