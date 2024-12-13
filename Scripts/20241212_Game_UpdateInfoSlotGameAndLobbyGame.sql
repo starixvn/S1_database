@@ -8,7 +8,7 @@
 /*Update Fun Slot Game to Normal not support Demo type*/
 UPDATE `TSDB`.`SlotGame`
 SET `Fun` = 2, CreateAt = '2024-11-01 00:00:00'
-where TpId IN (5,14,32,55,66,67,68,69);
+where TpId IN (5,14,32,55,66,67,68,69) AND `Fun` != 2;
 
 /*Update CreateAt Lobby Game*/
 UPDATE `TSDB`.`TpGameIdInfo`
