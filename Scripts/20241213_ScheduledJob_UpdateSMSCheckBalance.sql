@@ -7,6 +7,6 @@
 
 update ScheduledJob
 set Enable = 1,
-    Cron = '*/5 * * * *'
+    Cron = '0 10,18 * * *'
 where Project = 'Hangfire' and ClassName = 'SMSCheckBalanceJob' and JobName = 'SMSCheckBalance';
 
