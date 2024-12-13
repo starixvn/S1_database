@@ -10,16 +10,13 @@ update SiteConfig
 set ConfigValue = '{
     "SMSSupport": {
         "+66": [
-            "SkyLine",
-            "NxCloud"
+            "SkyLine"
         ],
         "+84": [
-            "SkyLine",
-            "NxCloud"
+            "SkyLine"
         ],
         "Default": [
-            "SkyLine",
-            "NxCloud"
+            "SkyLine"
         ]
     }
 }'
@@ -30,16 +27,13 @@ update SiteConfig
 set ConfigValue = '{
     "SMSSupport": {
         "+66": [
-            "SkyLine",
-            "NxCloud"
+            "SkyLine"
         ],
         "+84": [
-            "SkyLine",
-            "NxCloud"
+            "SkyLine"
         ],
         "Default": [
-            "SkyLine",
-            "NxCloud"
+            "SkyLine"
         ]
     }
 }'
