@@ -6,4 +6,4 @@
 */
 UPDATE `TSDB`.`TpGameId`
 SET Status = 0
-WHERE TpId = 5;
+WHERE TpId = 5 AND Status =1;
