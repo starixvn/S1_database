@@ -1,5 +1,5 @@
 /*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
-DELIMITER $$;
+DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_Bettrans_SBSW_Payload_Ins_v2`(
     IN YYYYMM VARCHAR(6),
     IN Timestamp VARCHAR(64),
@@ -27,6 +27,7 @@ BEGIN
     SET @GameType = GameType;
     SET @Environment = Environment;
 	SET @Elapsed = Elapsed;
+	SET @Response = Response;
 
     SET @CMD = CONCAT("INSERT INTO Bettrans_SBSW_Payload_", YYYYMM,
                 " (
@@ -39,7 +40,7 @@ BEGIN
 						`Elapsed`,
                         `Response`
                     )
-                VALUES (?, ?, ?, ?, ?, ?, ?,?)") ;
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)") ;
 
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING 
@@ -50,7 +51,8 @@ BEGIN
         @GameType,
         @Environment,
 		@Elapsed,
-		@Response,
+		@Response;
+		
     SELECT ROW_COUNT();
     DEALLOCATE PREPARE stmt;
 END$$
