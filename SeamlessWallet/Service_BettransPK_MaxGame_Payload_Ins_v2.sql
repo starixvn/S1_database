@@ -52,7 +52,7 @@ BEGIN
         @GameType,
         @Environment,
 		@Elapsed,
-        @Response,
+        @Response;
 
     SELECT ROW_COUNT();
     DEALLOCATE PREPARE stmt;
