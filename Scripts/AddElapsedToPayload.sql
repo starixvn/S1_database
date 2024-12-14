@@ -3,6 +3,8 @@
   Created: 20241203@Los
         DB: TSDB-TSDB
         Task: Add Elapsed to Payload table
+	Revisions:
+        - 20241119@Los: Initial
 */
 
 ALTER TABLE Bettrans_SBSW_Payload_202412

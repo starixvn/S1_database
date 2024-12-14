@@ -7,7 +7,8 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_Bettrans_SBSW_Payload_Ins_v2`(
     IN Payload JSON,
     IN Action VARCHAR(50),
     IN GameType VARCHAR(50),
-    IN Environment VARCHAR(20)
+    IN Environment VARCHAR(20),
+	IN Elapsed DOUBLE
 	/*
   Created: 20241031@Los
 	DB: TSDB-TSDB
@@ -24,6 +25,7 @@ BEGIN
     SET @Action = Action;
     SET @GameType = GameType;
     SET @Environment = Environment;
+	SET @Elapsed = Elapsed;
 
     SET @CMD = CONCAT("INSERT INTO Bettrans_SBSW_Payload_", YYYYMM,
                 " (
@@ -32,9 +34,10 @@ BEGIN
                         `Payload`,
                         `Action`,
                         `GameType`,
-                        `Environment`
+                        `Environment`,
+						`Elapsed`
                     )
-                VALUES (?, ?, ?, ?, ?, ?)") ;
+                VALUES (?, ?, ?, ?, ?, ?, ?)") ;
 
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING 
@@ -43,7 +46,8 @@ BEGIN
         @Payload,
         @Action,
         @GameType,
-        @Environment ;
+        @Environment,
+		@Elapsed;;
 
     SELECT ROW_COUNT();
     DEALLOCATE PREPARE stmt;
