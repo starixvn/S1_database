@@ -7,3 +7,6 @@
 
 ALTER TABLE Bettrans_SBSW_Payload_202412
 ADD COLUMN Elapsed INT AFTER Response; 
+
+ALTER TABLE BettransPK_MaxGame_Payload_202412
+ADD COLUMN Elapsed INT AFTER Response; 
