@@ -1,5 +1,5 @@
 /*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
-DELIMITER $$
+DELIMITER $$;
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_Bettrans_SBSW_Payload_Ins_v2`(
     IN YYYYMM VARCHAR(6),
     IN Timestamp VARCHAR(64),
@@ -8,7 +8,8 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_Bettrans_SBSW_Payload_Ins_v2`(
     IN Action VARCHAR(50),
     IN GameType VARCHAR(50),
     IN Environment VARCHAR(20),
-	IN Elapsed DOUBLE
+	IN Elapsed DOUBLE,
+    IN Response JSON
 	/*
   Created: 20241031@Los
 	DB: TSDB-TSDB
@@ -35,9 +36,10 @@ BEGIN
                         `Action`,
                         `GameType`,
                         `Environment`,
-						`Elapsed`
+						`Elapsed`,
+                        `Response`
                     )
-                VALUES (?, ?, ?, ?, ?, ?, ?)") ;
+                VALUES (?, ?, ?, ?, ?, ?, ?,?)") ;
 
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING 
@@ -47,8 +49,8 @@ BEGIN
         @Action,
         @GameType,
         @Environment,
-		@Elapsed;;
-
+		@Elapsed,
+		@Response,
     SELECT ROW_COUNT();
     DEALLOCATE PREPARE stmt;
 END$$

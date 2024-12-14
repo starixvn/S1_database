@@ -8,9 +8,11 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransPK_MaxGame_Payload_Ins_v2`(
     IN Action VARCHAR(50),
     IN GameType VARCHAR(50),
     IN Environment VARCHAR(20),
-	 IN Elapsed DOUBLE
+	IN Elapsed DOUBLE,
+    IN Response JSON
 )
-	/*
+
+/*
   Created: 20241029@Los
 	DB: TSDB-TSDB
 	Task: Add Elapsed
@@ -18,7 +20,6 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransPK_MaxGame_Payload_Ins_v2`(
 	Revisions:
 		- 20241029@Los: Add Elapsed
 */
-)
 BEGIN
 	 SET @Timestamp = Timestamp;
     SET @Seq = Seq;
@@ -27,6 +28,7 @@ BEGIN
     SET @GameType = GameType;
     SET @Environment = Environment;
 	SET @Elapsed = Elapsed;
+    SET @Response = Response;
 
     SET @CMD = CONCAT("INSERT INTO BettransPK_MaxGame_Payload_", YYYYMM,
                 " (
@@ -36,9 +38,10 @@ BEGIN
                         `Action`,
                         `GameType`,
                         `Environment`,
-						`Elapsed`
+						`Elapsed`,
+                        `Response`
                     )
-                VALUES (?, ?, ?, ?, ?, ?, ?)") ;
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)") ;
 
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING 
@@ -48,7 +51,8 @@ BEGIN
         @Action,
         @GameType,
         @Environment,
-		@Elapsed;;
+		@Elapsed,
+        @Response,
 
     SELECT ROW_COUNT();
     DEALLOCATE PREPARE stmt;
