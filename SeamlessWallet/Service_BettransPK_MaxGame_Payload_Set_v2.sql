@@ -5,7 +5,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransPK_MaxGame_Payload_Set_v2`(
 	IN YYYYMM VARCHAR(6),
 	IN Seq VARCHAR(64),
     IN Response JSON,
-    IN Elapsed INT
+    IN Elapsed DOUBLE
 	/*
   Created: 20241029@Los
 	DB: TSDB-TSDB
