@@ -1,3 +1,5 @@
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_BankFinancialReport_Transfer_Get_V3`(
     IN _SiteId INT,
     IN _CurrencyIds JSON,
@@ -12,6 +14,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_BankFinancialReport_Transfer_Get_V3`(
         Task: correct datetime 
          Revisions:
                 - 20241125@Liam: correct datetime 
+				- 20241216@Liam: fix sp crash
 */ 
 )
 BEGIN
@@ -29,7 +32,11 @@ BEGIN
             DisplayName
         FROM BankFinancialTransferAccount AS BFTA
         WHERE BFTA.SiteId = _SiteId
-            AND BFTA.Id IN (SELECT * FROM JSON_TABLE(_FinancialAccountIds, '$[*]' COLUMNS(`Id` INT PATH "$")) AS Temp)
+		   AND EXISTS (
+			SELECT 1
+			FROM JSON_TABLE(_FinancialAccountIds, '$[*]' COLUMNS(`Id` INT PATH "$")) AS Temp
+			WHERE Temp.Id = BFTA.Id
+		)
     )
     SELECT
         TI.CurrencyId,
@@ -45,13 +52,27 @@ BEGIN
         ON TI.AccountNo = cTA.AccountNo
     LEFT JOIN PayList AS PL ON PL.Id = TI.PayId
     WHERE TI.SiteId = _SiteId
-        AND TI.CurrencyId IN (SELECT * FROM JSON_TABLE(_CurrencyIds, '$[*]' COLUMNS(`CurrencyId` INT PATH "$")) AS Temp)
-        AND (_Agents IS NULL
-            OR TI.Agent IN (SELECT * FROM JSON_TABLE(_Agents, '$[*]' COLUMNS(`Agent` VARCHAR(50) PATH "$")) AS Temp))
-        AND (_Channel IS NULL
-            OR TI.`Channel` IN (SELECT * FROM JSON_TABLE(_Channel, '$[*]' COLUMNS(`Channel` TINYINT PATH "$")) AS Temp))
+	AND EXISTS (
+		SELECT 1 
+		FROM JSON_TABLE(_CurrencyIds, '$[*]' COLUMNS(`CurrencyId` INT PATH "$")) AS Temp
+		WHERE Temp.CurrencyId = TI.CurrencyId
+	)
+	AND (_Agents IS NULL
+		OR EXISTS (
+			SELECT 1
+			FROM JSON_TABLE(_Agents, '$[*]' COLUMNS(`Agent` VARCHAR(50) PATH "$")) AS Temp
+			WHERE Temp.Agent = TI.Agent
+		)
+	)
+	AND (_Channel IS NULL
+		OR EXISTS (
+			SELECT 1
+			FROM JSON_TABLE(_Channel, '$[*]' COLUMNS(`Channel` TINYINT PATH "$")) AS Temp
+			WHERE Temp.Channel = TI.Channel
+		)
+	)
         AND TI.TransDate BETWEEN @StartDate AND @EndDate
-  GROUP BY CurrencyId, cTA.FinancialId, AccountNo, IFNULL(TI.Agent, PL.PayName), Channel, TransferType
-  ;
+  GROUP BY CurrencyId, cTA.FinancialId, AccountNo, IFNULL(TI.Agent, PL.PayName), Channel, TransferType;
 
-END
+END$$
+DELIMITER ;
