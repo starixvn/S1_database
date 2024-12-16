@@ -5,6 +5,7 @@
         Task: Reset UAT TpWager Timer for Finance Worker
         Revisions:
                 - 20241216@George.Phung: Reset UAT TpWager Timer
+                - 20241216@George.Phung: Add Table Game 73
 */
 
 UPDATE 
@@ -24,5 +25,6 @@ UPDATE
         68,
         69,
         71,
-        72
+        72,
+        73
     )
