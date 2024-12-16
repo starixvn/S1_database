@@ -26,8 +26,8 @@ BEGIN
     SET @Action = Action;
     SET @GameType = GameType;
     SET @Environment = Environment;
+	SET @Elapsed = Elapsed;
 	SET @Response = Response;
-	SET @Elapsed=Elapsed;
 
     SET @CMD = CONCAT("INSERT INTO Bettrans_SBSW_Payload_", YYYYMM,
                 " (
@@ -36,7 +36,7 @@ BEGIN
                         `Payload`,
                         `Action`,
                         `GameType`,
-                        `Environment`
+                        `Environment`,
 						`Elapsed`,
                         `Response`
                     )
@@ -49,7 +49,7 @@ BEGIN
         @Payload,
         @Action,
         @GameType,
-        @Environment ;
+        @Environment,
 		@Elapsed,
 		@Response;
 		
