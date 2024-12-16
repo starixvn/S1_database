@@ -12,6 +12,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Member_HotGames_Get_V3`(
         Task: Get HotGames 
         Revisions:
                 - 20241113@Brian.Nguyen: Get hot games follow top and tpcategory
+				- 20241216@Brian.Nguyen: Get All Tp category for new games
 */)
 BEGIN  
    SELECT 
@@ -35,7 +36,7 @@ BEGIN
             LEFT JOIN TSDB.SlotGameStatus AS SLT ON SLT.SlotGameId = SL.Id AND SLT.SiteId = _SiteId AND SLT.CurrencyId = _CurrencyId
         WHERE 
             t.SiteId = _SiteId
-            AND FIND_IN_SET(t.TpCategory, _TpCategory) > 0
+            AND ( FIND_IN_SET(t.TpCategory, _TpCategory) > 0 OR t.TopCategory = 2)
             AND t.CurrencyId = _CurrencyId
             AND ( TGI.Status > 0 OR SLT.Status > 0)
     ) t
