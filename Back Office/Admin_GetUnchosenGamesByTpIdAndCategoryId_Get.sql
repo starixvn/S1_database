@@ -1,11 +1,11 @@
 /*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
 DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_GetUnchosenGamesByTpIdAndCategoryId_Get`(
-    IN _TpId int, 
-    IN _CategoryId int,
-    IN _SiteId int,
-    IN _CurrencyId int,
-    IN _TopCategory tinyint
+    IN _TpId INT, 
+    IN _CategoryId INT,
+    IN _SiteId INT,
+    IN _CurrencyId INT,
+    IN _TopCategory TINYINT
 /*
   Created: 20241216@Zephyr.Nguyen
         DB: TSDB-TSDB
@@ -21,8 +21,9 @@ BEGIN
     WHERE t.SiteId = _SiteId
       AND t.CurrencyId = _CurrencyId
       AND t.TopCategory = _TopCategory
-      AND (t.TpId = _TpId);
+      AND t.TpId = _TpId;
 
+    CREATE TEMPORARY TABLE TempResult1 AS
     SELECT 
         TGI.TpId,
         TGI.GameId,
@@ -35,7 +36,26 @@ BEGIN
       AND TGI.BetType = ''
       AND CG.GameId IS NULL;
 
+    CREATE TEMPORARY TABLE TempResult2 AS
+    SELECT
+        GC.TpId,
+        GC.GameId,
+        GCI.Name
+    FROM GameCasinoInfo AS GCI
+    INNER JOIN SlotGame AS GC ON GCI.GameCasinoId = GC.Id
+    LEFT JOIN ChosenGames CG ON GC.GameId = CG.GameId
+    WHERE GC.TpId = _TpId
+      AND GCI.Lang = 'en'
+      AND GC.CategoryId = _CategoryId
+      AND CG.GameId IS NULL;
+
+    SELECT * FROM TempResult1
+    UNION ALL
+    SELECT * FROM TempResult2;
+
     DROP TEMPORARY TABLE IF EXISTS ChosenGames;
+    DROP TEMPORARY TABLE IF EXISTS TempResult1;
+    DROP TEMPORARY TABLE IF EXISTS TempResult2;
 END$$
 DELIMITER ;
 
