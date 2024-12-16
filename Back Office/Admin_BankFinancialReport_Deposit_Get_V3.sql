@@ -1,3 +1,5 @@
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_BankFinancialReport_Deposit_Get_V3`(
     IN _SiteId INT,
     IN _CurrencyIds JSON,
@@ -12,12 +14,13 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_BankFinancialReport_Deposit_Get_V3`(
         Task: correct datetime 
          Revisions:
                 - 20241125@Liam: correct datetime 
+                - 20241216@Liam: fix sp crash
 */ 
 )
 BEGIN
-    
-   
-    SET @StartDate = _StartTime;
+
+
+	SET @StartDate = _StartTime;
     SET @EndDate = _EndTime;
     SET @StartDate_C = DATE_SUB(@StartDate, INTERVAL 7 DAY);
     SET @EndDate_C = DATE_ADD(@EndDate, INTERVAL 1 DAY);
@@ -41,21 +44,47 @@ BEGIN
     WHERE DI.`status` = 3
         AND C.IsTest = 0
         AND DI.SiteId = _SiteId
-        AND DI.CurrencyId IN (SELECT * FROM JSON_TABLE(_CurrencyIds, '$[*]' COLUMNS(`CurrencyId` INT PATH "$")) AS Temp)
-        AND (_Agents IS NULL
-            OR BFTA.Agent IN (SELECT * FROM JSON_TABLE(_Agents, '$[*]' COLUMNS(`Agent` VARCHAR(50) PATH "$")) AS Temp))
-        AND (_Channel IS NULL
-            OR BFTA.`Channel` IN (SELECT * FROM JSON_TABLE(_Channel, '$[*]' COLUMNS(`Channel` TINYINT PATH "$")) AS Temp))
-        AND (_FinancialAccountIds IS NULL
-            OR BFTA.Id IN (SELECT * FROM JSON_TABLE(_FinancialAccountIds, '$[*]' COLUMNS(`Id` INT PATH "$")) AS Temp)
-            OR BFTA2.Id IN (SELECT * FROM JSON_TABLE(_FinancialAccountIds, '$[*]' COLUMNS(`Id` INT PATH "$")) AS Temp))
+		AND EXISTS (
+			SELECT 1
+			FROM JSON_TABLE(_CurrencyIds, '$[*]' COLUMNS(`CurrencyId` INT PATH "$")) AS Temp
+			WHERE Temp.CurrencyId = DI.CurrencyId
+		)
+		AND (
+			_Agents IS NULL
+			OR EXISTS (
+				SELECT 1
+				FROM JSON_TABLE(_Agents, '$[*]' COLUMNS(`Agent` VARCHAR(50) PATH "$")) AS Temp
+				WHERE Temp.Agent = BFTA.Agent
+			)
+		)
+		AND (
+			_Channel IS NULL
+			OR EXISTS (
+				SELECT 1
+				FROM JSON_TABLE(_Channel, '$[*]' COLUMNS(`Channel` TINYINT PATH "$")) AS Temp
+				WHERE Temp.Channel = BFTA.`Channel`
+			)
+		)
+		AND (
+			_FinancialAccountIds IS NULL
+			OR EXISTS (
+				SELECT 1
+				FROM JSON_TABLE(_FinancialAccountIds, '$[*]' COLUMNS(`Id` INT PATH "$")) AS Temp
+				WHERE Temp.Id = BFTA.Id
+			)
+			OR EXISTS (
+				SELECT 1
+				FROM JSON_TABLE(_FinancialAccountIds, '$[*]' COLUMNS(`Id` INT PATH "$")) AS Temp
+				WHERE Temp.Id = BFTA2.Id
+			)
+		)
         AND DI.CreateTime BETWEEN @StartDate_C AND @EndDate_C
         AND DI.StatementTime BETWEEN @StartDate AND @EndDate
     GROUP BY CurrencyId,
         IFNULL(BFTA.Id, BFTA2.Id),
         IFNULL(BFTA.AccountNo, IFNULL(BFTA2.AccountNo, DI.DepositInfo->>'$.AccountNo')),
         IF(DI.DepositType = 3, BFTA.Agent, PL.PayName),
-        IF(DI.DepositType = 3, 1, 3)
-    ;
+        IF(DI.DepositType = 3, 1, 3);
    
-END
+END$$
+DELIMITER ;
