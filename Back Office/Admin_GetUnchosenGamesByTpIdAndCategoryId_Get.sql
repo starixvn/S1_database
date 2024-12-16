@@ -4,60 +4,38 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_GetUnchosenGamesByTpIdAndCategoryId_Ge
     IN _TpId int, 
     IN _CategoryId int,
     IN _SiteId int,
-    IN _CurrencyId smallint unsigned,
+    IN _CurrencyId int,
     IN _TopCategory tinyint
 /*
-  Created: 20241204@Zephyr.Nguyen
+  Created: 20241216@Zephyr.Nguyen
         DB: TSDB-TSDB
         Task: Fix bug Duplicate game data creation show error 500
         Revisions:
-                - 20241214@Zephyr.Nguyen: Create New SP Admin_GetUnchosenGamesByTpIdAndCategoryId_Get
+                - 20241216@Zephyr.Nguyen: Create New SP Admin_GetUnchosenGamesByTpIdAndCategoryId_Get
 */)
 BEGIN
+    CREATE TEMPORARY TABLE ChosenGames AS
+    SELECT DISTINCT t.GameId
+    FROM TSDB.HotGames t
+    INNER JOIN TpGameType TI ON t.TpGameType = TI.Type
+    WHERE t.SiteId = _SiteId
+      AND t.CurrencyId = _CurrencyId
+      AND t.TopCategory = _TopCategory
+      AND (t.TpId = _TpId);
+
     SELECT 
         TGI.TpId,
         TGI.GameId,
         TGI.Name
     FROM TSDB.TpGameId AS TGI
     LEFT JOIN TpGameType AS TGT ON TGT.Type = TGI.TpGameType
+    LEFT JOIN ChosenGames CG ON TGI.GameId = CG.GameId
     WHERE TGT.TpId = _TpId
       AND TGT.CategoryId = _CategoryId
       AND TGI.BetType = ''
-      AND TGI.GameId NOT IN (
-          SELECT t.GameId
-          FROM TSDB.HotGames t
-          INNER JOIN TpGameType TI on t.TpGameType = TI.Type
-          INNER JOIN TpCategory TJ on t.TpCategory = TJ.Id
-          INNER JOIN TpList TL on t.TpId = TL.Id
-          WHERE t.SiteId = _SiteId
-            AND t.CurrencyId = _CurrencyId
-            AND t.TopCategory = _TopCategory
-            AND (_TpId = 0 OR t.TpId = _TpId)
-      )
-      
-    UNION
+      AND CG.GameId IS NULL;
 
-    SELECT
-        GC.TpId,
-        GC.GameId,
-        GCI.Name
-    FROM GameCasinoInfo AS GCI
-    INNER JOIN SlotGame AS GC ON GCI.GameCasinoId = GC.Id
-    WHERE GC.TpId = _TpId
-      AND GCI.Lang = 'en'
-      AND GC.CategoryId = _CategoryId
-      AND GC.GameId NOT IN (
-          SELECT t.GameId
-          FROM TSDB.HotGames t
-          INNER JOIN TpGameType TI on t.TpGameType = TI.Type
-          INNER JOIN TpCategory TJ on t.TpCategory = TJ.Id
-          INNER JOIN TpList TL on t.TpId = TL.Id
-          WHERE t.SiteId = _SiteId
-            AND t.CurrencyId = _CurrencyId
-            AND t.TopCategory = _TopCategory
-            AND (_TpId = 0 OR t.TpId = _TpId)
-      )
-    GROUP BY GCI.GameCasinoId, GCI.Name;
+    DROP TEMPORARY TABLE IF EXISTS ChosenGames;
 END$$
 DELIMITER ;
 
