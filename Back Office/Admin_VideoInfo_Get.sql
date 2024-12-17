@@ -1,3 +1,5 @@
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_VideoInfo_Get`(
     IN _SiteId INT,
     IN _CurrencyIds JSON,
@@ -6,6 +8,13 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_VideoInfo_Get`(
     IN _StartIndex INT,
     OUT _TotalPages INT,
     OUT _RowCount INT
+/*
+  Created: 20241125@Liam 
+        DB: TSDB-TSDB
+        Task: fix sp crash
+         Revisions:
+                - 20241216@Liam: fix sp crash
+*/
 )
 BEGIN
     
@@ -24,8 +33,16 @@ BEGIN
         ServerInfo AS SI ON VI.SiteId = SI.SiteId
     WHERE 
         VI.SiteId = _SiteId
-    AND VI.CurrencyId IN (SELECT * FROM JSON_TABLE(_CurrencyIds, '$[*]' COLUMNS(`CurrencyId` TINYINT PATH "$")) AS CurrencyIdList)
-    AND VI.LangId IN (SELECT * FROM JSON_TABLE(_LangList, '$[*]' COLUMNS(`Lang` VARCHAR(10) PATH "$")) AS LangList)
+		AND EXISTS (
+			SELECT 1
+			FROM JSON_TABLE(_CurrencyIds, '$[*]' COLUMNS(`CurrencyId` TINYINT PATH "$")) AS CurrencyIdList
+			WHERE CurrencyIdList.CurrencyId = VI.CurrencyId
+		)
+		AND EXISTS (
+			SELECT 1
+			FROM JSON_TABLE(_LangList, '$[*]' COLUMNS(`Lang` VARCHAR(10) PATH "$")) AS LangList
+			WHERE LangList.Lang = VI.LangId
+		)
     ORDER BY VI.`Date` DESC, IFNULL(VI.UpdateTime,VI.CreateTime) DESC
     LIMIT _StartIndex , _PageSize;
     
@@ -35,5 +52,5 @@ BEGIN
     ELSE
         SET _TotalPages = CEIL(_RowCount/_PageSize);
     END IF;
-    
-END
+END$$
+DELIMITER ;
