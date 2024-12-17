@@ -1,3 +1,6 @@
+/*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
+DELIMITER $$
+
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_AdminAdjustmentInfoLog_Get`(
     IN _SiteIds JSON,
     IN _CurrencyIds JSON,
@@ -11,6 +14,13 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_AdminAdjustmentInfoLog_Get`(
     IN _StartIndex INT,
     OUT _TotalPages INT,
     OUT _RowCount INT
+/*
+  Created: 20241125@Liam 
+        DB: TSDB-TSDB
+        Task: fix sp crash
+         Revisions:
+                - 20241216@Liam: fix sp crash
+*/ 
 )
 BEGIN
     
@@ -33,10 +43,26 @@ BEGIN
             ON AL.CurrencyId = C.CurrencyId
         LEFT JOIN ServerInfo AS SI
             ON AL.SiteId = SI.SiteId
-       WHERE (AL.SiteId = 0 OR AL.SiteId IN (SELECT * FROM JSON_TABLE(_SiteIds, '$[*]' COLUMNS(`SiteId` INT PATH "$")) AS SiteIdList))
-         AND (AL.CurrencyId = 0 OR AL.CurrencyId IN (SELECT * FROM JSON_TABLE(_CurrencyIds, '$[*]' COLUMNS(`CurrencyId` TINYINT PATH "$")) AS CurrencyIdList))
-         AND AL.Menu IN (SELECT * FROM JSON_TABLE(_Menus, '$[*]' COLUMNS(`Menu` TINYINT PATH "$")) AS MenuList)
-         AND AL.ActionType IN (SELECT * FROM JSON_TABLE(_ActionTypes, '$[*]' COLUMNS(`Menu` TINYINT PATH "$")) AS ActionTypeList)
+		WHERE (AL.SiteId = 0 OR EXISTS (
+					SELECT 1 
+					FROM JSON_TABLE(_SiteIds, '$[*]' COLUMNS(`SiteId` INT PATH "$")) AS SiteIdList
+					WHERE SiteIdList.SiteId = AL.SiteId
+				))
+		  AND (AL.CurrencyId = 0 OR EXISTS (
+					SELECT 1 
+					FROM JSON_TABLE(_CurrencyIds, '$[*]' COLUMNS(`CurrencyId` TINYINT PATH "$")) AS CurrencyIdList
+					WHERE CurrencyIdList.CurrencyId = AL.CurrencyId
+				))
+		  AND EXISTS (
+					SELECT 1 
+					FROM JSON_TABLE(_Menus, '$[*]' COLUMNS(`Menu` TINYINT PATH "$")) AS MenuList
+					WHERE MenuList.Menu = AL.Menu
+				)
+		  AND EXISTS (
+					SELECT 1 
+					FROM JSON_TABLE(_ActionTypes, '$[*]' COLUMNS(`Menu` TINYINT PATH "$")) AS ActionTypeList
+					WHERE ActionTypeList.Menu = AL.ActionType
+				)
          AND AL.CreateTime BETWEEN _StartDate AND _EndDate
          AND (_RefTransId IS NULL OR AL.RefTransId = _RefTransId)
          AND (_Operator IS NULL OR AL.Operator = _Operator)
@@ -49,4 +75,5 @@ BEGIN
     ELSE
         SET _TotalPages = CEIL(_RowCount/_PageSize);
     END IF;
-END
+END$$
+DELIMITER ;
