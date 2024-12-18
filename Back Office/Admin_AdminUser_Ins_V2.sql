@@ -5,6 +5,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_AdminUser_Ins_V2`(
     IN Userpwd VARCHAR(50),
     IN Operator VARCHAR(50),
     IN AccountType TINYINT,
+    IN IsSuper TINYINT,
     OUT SEQ int
 /*
   Created: 20241217@issac.Le
@@ -16,7 +17,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_AdminUser_Ins_V2`(
 )
 BEGIN
 
-    INSERT INTO AdminUserV2 (UserName,Userpwd,UpdateOperator,AccountType) VALUES (UserName,Userpwd,Operator,AccountType);
+    INSERT INTO AdminUserV2 (UserName,Userpwd,UpdateOperator,AccountType, IsSuper) VALUES (UserName,Userpwd,Operator,AccountType, IsSuper);
     SET SEQ = LAST_INSERT_ID();
 END$$
 DELIMITER ;
