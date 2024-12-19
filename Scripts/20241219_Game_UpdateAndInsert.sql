@@ -7,9 +7,9 @@
 
 /*Active list game type games vendor PP*/
 UPDATE `TSDB`.`TpGameId` SET `Status` = '1' WHERE (`No` = '406') AND (`Status` = '0');
-UPDATE `TSDB`.`TpGameId` SET `Status` = '1' WHERE (`No` = '406') AND (`Status` = '0');
-UPDATE `TSDB`.`TpGameId` SET `Status` = '1' WHERE (`No` = '406') AND (`Status` = '0');
-UPDATE `TSDB`.`TpGameId` SET `Status` = '1' WHERE (`No` = '406') AND (`Status` = '0');
+UPDATE `TSDB`.`TpGameId` SET `Status` = '1' WHERE (`No` = '407') AND (`Status` = '0');
+UPDATE `TSDB`.`TpGameId` SET `Status` = '1' WHERE (`No` = '408') AND (`Status` = '0');
+UPDATE `TSDB`.`TpGameId` SET `Status` = '1' WHERE (`No` = '409') AND (`Status` = '0');
 
 /*Remove slot game Spaceman*/
 DELETE FROM `TSDB`.`GameCasinoExtra` WHERE GameCasinoId IN (510408);
