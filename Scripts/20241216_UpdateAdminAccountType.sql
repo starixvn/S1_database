@@ -7,3 +7,10 @@
 
 ALTER TABLE TSDB.AdminUserV2 
 ADD AccountType TINYINT NULL;
+
+UPDATE AdminUserV2 
+SET AccountType = CASE 
+	WHEN IsSuper = 1 THEN 2
+	WHEN IsSuper = 0 THEN 0
+END
+WHERE IsSuper IN (0, 1)
