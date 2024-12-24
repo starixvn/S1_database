@@ -12,18 +12,44 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `LoginNewAdminUser_Get`(
 */
 )
 BEGIN
+
+        IF UserName != '' THEN
+                SELECT 
+                        AdminUserV2.UserId,
+                        AdminUserV2.UserName,
+                        AdminUserV2.Userpwd,
+                        AdminUserV2.IsSuper,
+                        AdminUserV2.`Status`,
+                        AdminUserV2.`ReferenceID`
+                FROM
+                        AdminUserV2
+                WHERE
+                        AdminUserV2.UserName = UserName;
+        ELSE
+                SELECT 
+                        AdminUserV2.UserId,
+                        AdminUserV2.UserName,
+                        AdminUserV2.Userpwd,
+                        AdminUserV2.IsSuper,
+                        AdminUserV2.`Status`,
+                        AdminUserV2.`ReferenceID`
+                FROM
+                        AdminUserV2
+                WHERE
+                        AdminUserV2.ReferenceID = ReferenceId;
+        END IF;
 		
-		SELECT 
-			AdminUserV2.UserId,
-			AdminUserV2.UserName,
-			AdminUserV2.Userpwd,
-			AdminUserV2.IsSuper,
-			AdminUserV2.`Status`,
-			AdminUserV2.`ReferenceID`
-		FROM
-			AdminUserV2
-		WHERE
-			TRIM(COALESCE(AdminUserV2.UserName, '')) != '' and AdminUserV2.UserName = UserName
-			OR TRIM(COALESCE(AdminUserV2.ReferenceID , '')) != '' and AdminUserV2.ReferenceID = ReferenceId;
+		-- SELECT 
+		-- 	AdminUserV2.UserId,
+		-- 	AdminUserV2.UserName,
+		-- 	AdminUserV2.Userpwd,
+		-- 	AdminUserV2.IsSuper,
+		-- 	AdminUserV2.`Status`,
+		-- 	AdminUserV2.`ReferenceID`
+		-- FROM
+		-- 	AdminUserV2
+		-- WHERE
+		-- 	TRIM(COALESCE(AdminUserV2.UserName, '')) != '' and AdminUserV2.UserName = UserName
+		-- 	OR TRIM(COALESCE(AdminUserV2.ReferenceID , '')) != '' and AdminUserV2.ReferenceID = ReferenceId;
 	END$$
 DELIMITER ;
