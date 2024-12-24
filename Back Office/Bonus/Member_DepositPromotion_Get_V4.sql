@@ -129,6 +129,7 @@ BEGIN
         AND P.`Status` = 1
         AND @DiffUnixTime BETWEEN P.PeriodFrom AND P.PeriodTo
         AND (PS.`Usage`= 0 OR PS.`Usage` > PS.BeenUsed)
+		AND (PS.TotalUsageLimit = 0 OR PS.TotalUsageLimit > PS.TotalBeenUsed)
         AND PS.CurrencyId = @CurrencyId
         AND PS.SiteId = @SiteId
         AND PS.`Status` = 1
