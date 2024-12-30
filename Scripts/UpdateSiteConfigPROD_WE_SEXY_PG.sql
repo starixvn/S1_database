@@ -12,7 +12,7 @@ SET ConfigValue='{
     "OperatorPwd": "s1hb8uik",
     "OperatorKey": "ck03ijvk",
     "GameType": "WorldEntertainment",
-    "ApiUrl": "http://worldentertainment.edge2cast.com",
+    "ApiUrl": "http://saba-plus-internal.nebula.prod:7017",
 	"DailySumApiUrl": "http://saba-plus-internal.nebula.prod:7033"
 }',
 UpdateTime = NOW()
@@ -24,7 +24,7 @@ SET ConfigValue='{
     "OperatorPwd": "s1hb8uik",
     "OperatorKey": "ck03ijvk",
     "GameType": "SexyCasino",
-    "ApiUrl": "http://aesxc.edge2cast.com",
+    "ApiUrl": "http://saba-plus-internal.nebula.prod:7002",
 	"DailySumApiUrl": "http://saba-plus-internal.nebula.prod:7033"
 }',
 UpdateTime = NOW()
@@ -36,7 +36,7 @@ SET ConfigValue='{
     "OperatorPwd": "s1hb8uik",
     "OperatorKey": "ck03ijvk",
     "GameType": "PocketGames",
-    "ApiUrl": "http://pocketgames.edge2cast.com",
+    "ApiUrl": "http://saba-plus-internal.nebula.prod:7103",
 	"DailySumApiUrl": "http://saba-plus-internal.nebula.prod:7033"
 }',
 UpdateTime = NOW()
