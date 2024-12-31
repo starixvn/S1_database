@@ -13,6 +13,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_PaymentReport_Withdrawal_Get_V2`(
         Task: Add PayIds to filter
         Revisions:
                 - 20241231@Loki.Nguyen: Add PayIds to filter
+                - 20241231@Loki.Nguyen: Fix Username filter
 */)
 
 BEGIN
@@ -37,9 +38,9 @@ BEGIN
     WHERE  WI.Status = 6
         AND C.IsTest = 0
         AND WI.FlowEndTime BETWEEN _StartTime AND _EndTime
-        AND EXISTS (SELECT 1 FROM JSON_TABLE(_Types, '$[*]' COLUMNS(`Type` INT PATH '$')) AS WithdrawalTypeList WHERE WithdrawalTypeList.`Type` = WI.WithdrawalType)
+        AND EXISTS (SELECT 1 FROM JSON_TABLE(_Types, '$[*]' COLUMNS(`Type` TINYINT PATH '$')) AS WithdrawalTypeList WHERE WithdrawalTypeList.`Type` = WI.WithdrawalType)
         AND EXISTS (SELECT 1 FROM JSON_TABLE(_PayIds, '$[*]' COLUMNS(`Id` INT PATH '$')) AS PayIdList WHERE PayIdList.`Id` = PL.Id)
-        AND (_UserNames IS NULL OR EXISTS (SELECT 1 FROM JSON_TABLE(_UserNames, '$[*]' COLUMNS(`UserName` INT PATH '$')) AS UserNameList WHERE UserNameList.`UserName` =  C.UserName))
+        AND (_UserNames IS NULL OR EXISTS (SELECT 1 FROM JSON_TABLE(_UserNames, '$[*]' COLUMNS(UserName VARCHAR(30) CHARACTER SET ASCII PATH "$")) AS UserNameList WHERE UserNameList.`UserName` =  C.UserName))
     ;
     
 END$$
