@@ -1,0 +1,2 @@
+#table_name,retention_day
+TpBetRecordExtend, 60
