@@ -40,6 +40,8 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_JILI_Ins`(
 
 
 BEGIN
+	SET @starttime = CURRENT_TIMESTAMP(6);
+	
     SET @reqId = Seq;
     SET @userId = OperatorCustId; 
     SET @currency = '' ;
@@ -105,6 +107,8 @@ BEGIN
     DEALLOCATE PREPARE stmt;
     
     SET SQ = LAST_INSERT_ID();
+	
+	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_BettransRng_JILI_Ins', @starttime, CURRENT_TIMESTAMP(6));
     
 END ;;
 DELIMITER ;

@@ -14,6 +14,8 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_TicketNo_Get`(
 		- 20241030@Luke: Initial
 */
 BEGIN
+	SET @starttime = CURRENT_TIMESTAMP(6);
+	
     SET @TicketNo = TicketNo;
     
     SET @CMD = CONCAT("SELECT `SQ`,
@@ -40,6 +42,8 @@ BEGIN
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING @TicketNo;
     DEALLOCATE PREPARE stmt;
+	
+	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_BettransRng_FaChai_TicketNo_Get', @starttime, CURRENT_TIMESTAMP(6));
 END 
 $$
 DELIMITER ;

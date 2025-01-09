@@ -18,7 +18,8 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_SeamlessWallet_Set_V2`(
                 - 20241226@Luke: Fix SPs upsert
 */)
 BEGIN
-    
+    SET @starttime = CURRENT_TIMESTAMP(6);
+	
     SET AfterAmount = Amount;
     
     SELECT 
@@ -51,6 +52,8 @@ BEGIN
 			INSERT INTO CustWallet(CustId, SiteId, Balance) VALUE(CustId, SiteId, AfterAmount);
         END IF;
     END IF;
+	
+	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_SeamlessWallet_Set_V2', @starttime, CURRENT_TIMESTAMP(6));
 END$$
 DELIMITER ;
 

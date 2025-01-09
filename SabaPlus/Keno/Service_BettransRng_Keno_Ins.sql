@@ -37,7 +37,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_Keno_Ins`(
 */
 )
 BEGIN
-
+	SET @starttime = CURRENT_TIMESTAMP(6);
     
     
     SET @Seq = Seq;
@@ -126,5 +126,6 @@ BEGIN
     
     SET SQ = LAST_INSERT_ID();
     
+	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_BettransRng_Keno_Ins', @starttime, CURRENT_TIMESTAMP(6));
 END$$
 DELIMITER ;

@@ -19,7 +19,8 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Wallet_Set_V2`(
 */)
 BEGIN
     
-    
+    SET @starttime = CURRENT_TIMESTAMP(6);
+	
     SET AfterAmount = Amount;
     SET Is1stDepoist = FALSE;
     SELECT Amount + CustWallet.Balance INTO AfterAmount FROM CustWallet WHERE CustWallet.CustId=CustId FOR UPDATE;
@@ -75,5 +76,7 @@ BEGIN
             UPDATE Customer SET Customer.ActStatus = 2 WHERE Customer.CustId = CustId AND Customer.ActStatus = 1;
         END IF;
     END IF;
+	
+	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Wallet_Set_V2', @starttime, CURRENT_TIMESTAMP(6));
 END$$
 DELIMITER ;

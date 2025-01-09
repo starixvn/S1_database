@@ -15,6 +15,8 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransLT_Lottery_TicketNo_Get`(
 )
 
 BEGIN
+	SET @starttime = CURRENT_TIMESTAMP(6);
+	
     SET @TicketNo = TicketNo;
     
     SET @CMD = CONCAT("SELECT * FROM BettransLT_Lottery_", YYYYMM, " WHERE TicketNo = ?;");
@@ -22,5 +24,7 @@ BEGIN
     PREPARE stmt FROM @CMD;
     EXECUTE stmt USING @TicketNo;
     DEALLOCATE PREPARE stmt;
+	
+	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_BettransLT_Lottery_TicketNo_Get', @starttime, CURRENT_TIMESTAMP(6));
 END ;;
 DELIMITER ;

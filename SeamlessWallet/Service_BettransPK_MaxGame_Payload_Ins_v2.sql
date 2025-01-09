@@ -9,7 +9,8 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransPK_MaxGame_Payload_Ins_v2`(
     IN GameType VARCHAR(50),
     IN Environment VARCHAR(20),
 	IN Elapsed DOUBLE,
-    IN Response JSON
+    IN Response JSON,
+	IN GUID VARCHAR(50)
 )
 
 /*
@@ -21,7 +22,9 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransPK_MaxGame_Payload_Ins_v2`(
 		- 20241029@Los: Add Elapsed
 */
 BEGIN
-	 SET @Timestamp = Timestamp;
+	SET @starttime = CURRENT_TIMESTAMP(6);
+	
+	SET @Timestamp = Timestamp;
     SET @Seq = Seq;
     SET @Payload = Payload;
     SET @Action = Action;
@@ -56,5 +59,7 @@ BEGIN
 
     SELECT ROW_COUNT();
     DEALLOCATE PREPARE stmt;
+	
+	INSERT INTO SPLog (spname, starttime, endtime, GUID) VALUES ('Service_BettransPK_MaxGame_Payload_Ins_v2', @starttime, CURRENT_TIMESTAMP(6), GUID);
 END $$
 DELIMITER $$;

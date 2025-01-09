@@ -37,7 +37,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_TableGame_Ins`(
 */
 )
 BEGIN
-
+	SET @starttime = CURRENT_TIMESTAMP(6);
     
     
     SET @Seq = Seq;
@@ -125,6 +125,8 @@ BEGIN
     DEALLOCATE PREPARE stmt;
     
     SET SQ = LAST_INSERT_ID();
+	
+	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_BettransRng_TableGame_Ins', @starttime, CURRENT_TIMESTAMP(6));
     
 END$$
 DELIMITER ;

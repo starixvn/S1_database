@@ -1,6 +1,5 @@
 /*<info serverAlias="TSDB-TSDB" databaseType="2" executers="app_srv" isFunction="0" isNested="0"></info>*/
-DROP PROCEDURE IF EXISTS `Service_TpBetRecord_Set_V3`;
-DELIMITER ;;
+DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_TpBetRecord_Set_V3`(
      IN TpId int,
      IN TransId varchar(100) ,
@@ -25,190 +24,85 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_TpBetRecord_Set_V3`(
      IN BonusId int,
      IN GameID varchar(50)
 /*
-  Created: 
-	DB: TSDB-TSDB
-	Task: update TpBetRecord
-
-	Revisions:
-		- 20250106@Kathy: remove "update with duplicate key" statement
+  Created: 20250114@Kathy
+        DB: TSDB-TSDB
+        Task: load test
+        Revisions:
+                - 20241226@Kathy: load test
 */
 )
 BEGIN
-    
+	SET @starttime = CURRENT_TIMESTAMP(6);
 
     SET @SettledTime = IF(SettledTime=0, NOW(), FROM_UNIXTIME(SettledTime));
     SET @TransTime = IF(TransTime=0, NOW(), FROM_UNIXTIME(TransTime));
     
-	IF EXISTS(SELECT 1 FROM TpBetRecord t WHERE t.TpId = TpId AND t.TransId = TransId AND t.GameType = GameType ) THEN
-		UPDATE TpBetRecord t 
-			SET TransTime = @TransTime,
-				SettledTime = @SettledTime, 
-				Stake = Stake, 
-				ValidBet = ValidBet,
-				Revenue = Revenue,
-				WinlostAmount = WinlostAmount,
-				ProgressiveBet = ProgressiveBet,
-				ProgressiveWin = ProgressiveWin,
-				SettlementType = SettlementType,
-				TicketStatus = TicketStatus,
-				OriginalState = OriginalState,
-				TicketKey = TicketKey,
-				BonusId = BonusId,
-				GameID = GameID
-		WHERE 	t.TpId = TpId
-				AND t.TransId = TransId
-				AND t.GameType = GameType;
+    INSERT INTO TpBetRecord
+    (
+        TpId,
+        TransId,
+        GameType,
+        CustId,
+        UserName,
+        CurrencyId,
+        SiteId,
+        TpUserName,
+        TransTime,
+        SettledTime,
+        Stake,
+        ValidBet,
+        Revenue,
+        WinlostAmount,
+        ProgressiveBet,
+        ProgressiveWin,
+        SettlementType,
+        TicketStatus,
+        OriginalState,
+        BonusId,
+        GameID,
+        TicketKey
+    )
+    VALUES
+    (
+        TpId,
+        TransId,
+        GameType,
+        CustId,
+        UserName,
+        CurrencyId,
+        SiteId,
+        TpUserName,
+        @TransTime,
+        @SettledTime,
+        Stake,
+        ValidBet,
+        Revenue,
+        WinlostAmount,
+        ProgressiveBet,
+        ProgressiveWin,
+        SettlementType,
+        TicketStatus,
+        OriginalState,
+        BonusId,
+        GameID,
+        TicketKey
+    )
+    ON DUPLICATE KEY UPDATE 
+        TpBetRecord.TransTime = @TransTime,
+        TpBetRecord.SettledTime = @SettledTime, 
+        TpBetRecord.Stake = Stake, 
+        TpBetRecord.ValidBet = ValidBet,
+        TpBetRecord.Revenue = Revenue,
+        TpBetRecord.WinlostAmount = WinlostAmount,
+        TpBetRecord.ProgressiveBet = ProgressiveBet,
+        TpBetRecord.ProgressiveWin = ProgressiveWin,
+        TpBetRecord.SettlementType = SettlementType,
+        TpBetRecord.TicketStatus = TicketStatus,
+        TpBetRecord.OriginalState = OriginalState,
+        TpBetRecord.TicketKey = TicketKey,
+        TpBetRecord.BonusId = BonusId,
+        TpBetRecord.GameID = GameID;
 		
-		INSERT INTO TpBetRecord_testing (
-				TpId,
-				TransId,
-				GameType,
-				CustId,
-				UserName,
-				CurrencyId,
-				SiteId,
-				TpUserName,
-				TransTime,
-				SettledTime,
-				Stake,
-				ValidBet,
-				Revenue,
-				WinlostAmount,
-				ProgressiveBet,
-				ProgressiveWin,
-				SettlementType,
-				TicketStatus,
-				OriginalState,
-				BonusId,
-				GameID,
-				TicketKey
-			)
-			VALUES
-			(
-				TpId,
-				TransId,
-				GameType,
-				CustId,
-				UserName,
-				CurrencyId,
-				SiteId,
-				TpUserName,
-				@TransTime,
-				@SettledTime,
-				Stake,
-				ValidBet,
-				Revenue,
-				WinlostAmount,
-				ProgressiveBet,
-				ProgressiveWin,
-				SettlementType,
-				TicketStatus,
-				OriginalState,
-				BonusId,
-				GameID,
-				TicketKey
-			) ;
-	ELSE
-		INSERT INTO TpBetRecord
-			(
-				TpId,
-				TransId,
-				GameType,
-				CustId,
-				UserName,
-				CurrencyId,
-				SiteId,
-				TpUserName,
-				TransTime,
-				SettledTime,
-				Stake,
-				ValidBet,
-				Revenue,
-				WinlostAmount,
-				ProgressiveBet,
-				ProgressiveWin,
-				SettlementType,
-				TicketStatus,
-				OriginalState,
-				BonusId,
-				GameID,
-				TicketKey
-			)
-		VALUES
-			(
-				TpId,
-				TransId,
-				GameType,
-				CustId,
-				UserName,
-				CurrencyId,
-				SiteId,
-				TpUserName,
-				@TransTime,
-				@SettledTime,
-				Stake,
-				ValidBet,
-				Revenue,
-				WinlostAmount,
-				ProgressiveBet,
-				ProgressiveWin,
-				SettlementType,
-				TicketStatus,
-				OriginalState,
-				BonusId,
-				GameID,
-				TicketKey
-			) ;
-			
-		INSERT INTO TpBetRecord_testing (
-				TpId,
-				TransId,
-				GameType,
-				CustId,
-				UserName,
-				CurrencyId,
-				SiteId,
-				TpUserName,
-				TransTime,
-				SettledTime,
-				Stake,
-				ValidBet,
-				Revenue,
-				WinlostAmount,
-				ProgressiveBet,
-				ProgressiveWin,
-				SettlementType,
-				TicketStatus,
-				OriginalState,
-				BonusId,
-				GameID,
-				TicketKey
-			)
-			VALUES
-			(
-				TpId,
-				TransId,
-				GameType,
-				CustId,
-				UserName,
-				CurrencyId,
-				SiteId,
-				TpUserName,
-				@TransTime,
-				@SettledTime,
-				Stake,
-				ValidBet,
-				Revenue,
-				WinlostAmount,
-				ProgressiveBet,
-				ProgressiveWin,
-				SettlementType,
-				TicketStatus,
-				OriginalState,
-				BonusId,
-				GameID,
-				TicketKey
-			) ;
-	END IF;
-END;;
+	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_TpBetRecord_Set_V3', @starttime, CURRENT_TIMESTAMP(6));
+END$$
 DELIMITER ;

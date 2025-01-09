@@ -27,6 +27,8 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_Ins`(
 */
 )
 BEGIN
+	SET @starttime = CURRENT_TIMESTAMP(6);
+	
     SET @RecordId = Seq;
     SET @MemberAccount = OperatorCustId;
     SET @GameId = GameId;
@@ -88,5 +90,7 @@ BEGIN
     DEALLOCATE PREPARE stmt;
    
     SET SQ = LAST_INSERT_ID();
+	
+	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_BettransRng_FaChai_Ins', @starttime, CURRENT_TIMESTAMP(6));
 END$$
 DELIMITER ;
