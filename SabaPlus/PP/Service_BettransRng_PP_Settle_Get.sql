@@ -23,7 +23,7 @@ BEGIN
             TicketNo AS TransId,
             GameId AS GameId,
             IFNULL(SUM(IF(TicketType = 1, ABS(ActualStake), 0)), 0) AS Stake,
-            IFNULL(SUM(IF(TicketType = 4, ABS(ActualStake), 0)), 0) AS ValidBet,
+            IFNULL(SUM(IF(TicketType = 4, ABS(NetStake), 0)), 0) AS ValidBet,
             IFNULL(SUM(Payout), 0) - IFNULL(SUM(IF(TicketType = 1, ABS(ActualStake), 0)), 0) AS WinLostAmount,
             UNIX_TIMESTAMP(MAX(Settledate)) AS TransTime,
             UNIX_TIMESTAMP(MAX(Settledate)) AS SettleTime

@@ -50,6 +50,7 @@ BEGIN
     SET @TicketNo = TicketNo;
 	SET @ActualStake = ActualStake;
 	SET @Payout = Payout;
+	SET @NetStake = NetStake;
    
    SET @CMD = CONCAT("INSERT INTO BettransRng_PP_", YYYYMM,
                 " (
@@ -63,9 +64,10 @@ BEGIN
                         `TicketType`,
                         `TicketStatus`,
 						`SettleFlag`,                       
-                        `TicketNo`
+                        `TicketNo`,
+						`NetStake`
                     )
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)") ;
                 
 	PREPARE stmt FROM @CMD;
     EXECUTE stmt USING 
@@ -79,7 +81,9 @@ BEGIN
         ,@TicketType
         ,@TicketStatus
 		,@SettleFlag        
-        ,@TicketNo;
+        ,@TicketNo
+		,@NetStake
+		;
         
     SELECT ROW_COUNT();
     DEALLOCATE PREPARE stmt;

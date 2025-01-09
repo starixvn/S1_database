@@ -25,18 +25,18 @@ BEGIN
         SELECT
             CU.CurrencyId AS CurrencyId,
             IFNULL(SUM(IF(BPM.TicketType = 4, ABS(BPM.ActualStake), 0)), 0) AS Stake,
-            IFNULL(SUM(IF(BPM.TicketType = 4, ABS(BPM.ActualStake), 0)), 0) AS ValidBet,
+            IFNULL(SUM(IF(BPM.TicketType = 4, ABS(BPM.NetStake), 0)), 0) AS ValidBet,
             IFNULL(SUM(BPM.Payout), 0) AS Payout,
             IFNULL(SUM(BPM.Payout), 0) - IFNULL(SUM(IF(BPM.TicketType = 4, ABS(BPM.ActualStake), 0)), 0) AS WinLostAmount
         FROM
 			(
-				SELECT  TicketType, ActualStake, Payout, OperatorCustId
+				SELECT  TicketType, ActualStake, NetStake, Payout, OperatorCustId
 				FROM 	BettransRng_PP_", YYYYMM, " AS BPM
 				WHERE 	BPM.SettleDate BETWEEN ? AND ?
 						AND BPM.TicketStatus NOT IN (3)
 						AND BPM.SettleFlag = 1   
 				UNION ALL
-				SELECT  TicketType, ActualStake, Payout, OperatorCustId
+				SELECT  TicketType, ActualStake, NetStake, Payout, OperatorCustId
 				FROM 	BettransLC_PP_", YYYYMM, " AS BPM
 				WHERE 	BPM.SettleDate BETWEEN ? AND ?
 						AND BPM.TicketStatus NOT IN (3)
