@@ -6,8 +6,8 @@
 */
 
 INSERT INTO TSDB.AdminMenu
-(Id, Name, HeirId, Sort, AdditionalSetting, `Translation`, Status)
-VALUES(164, 'White List IP', 9, 0, '{"Permission": [1, 3, 4, 5]}', NULL, 1);
+(Name, HeirId, Sort, AdditionalSetting, `Translation`, Status)
+VALUES('White List IP', 9, 0, '{"Permission": [1, 3, 4, 5]}', NULL, 1);
 
 INSERT INTO TSDB.WhitelistIP (IPFrom, IPTo, Memo, CreateTime, UpdateOperator)
 VALUES
