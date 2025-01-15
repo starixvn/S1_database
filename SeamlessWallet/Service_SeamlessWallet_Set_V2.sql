@@ -9,6 +9,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_SeamlessWallet_Set_V2`(
     IN Memo VARCHAR(200),
     IN RefTransId VARCHAR(100),
     IN AllowNegative TINYINT,
+    IN GUID VARCHAR(50),
     OUT AfterAmount DECIMAL(18, 4)
 /*
   Created: 20241226@Luke
@@ -53,7 +54,7 @@ BEGIN
         END IF;
     END IF;
 	
-	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_SeamlessWallet_Set_V2', @starttime, CURRENT_TIMESTAMP(6));
+	INSERT INTO SPLog (spname, starttime, endtime, GUID) VALUES ('Service_SeamlessWallet_Set_V2', @starttime, CURRENT_TIMESTAMP(6), GUID);
 END$$
 DELIMITER ;
 

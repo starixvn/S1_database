@@ -28,6 +28,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransLC_WE_Ins`(
     IN TicketStatus TINYINT,
     IN SettleFlag TINYINT,
 	IN OtherBetInfo JSON,
+    IN GUID VARCHAR(50),
     OUT SQ BIGINT
 /*
   Created: 
@@ -132,7 +133,7 @@ BEGIN
     
     SET SQ = LAST_INSERT_ID();
 	
-	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_BettransLC_WE_Ins', @starttime, CURRENT_TIMESTAMP(6));
+	INSERT INTO SPLog (spname, starttime, endtime, GUID) VALUES ('Service_BettransLC_WE_Ins', @starttime, CURRENT_TIMESTAMP(6), GUID);
     
 END ;;
 DELIMITER ;

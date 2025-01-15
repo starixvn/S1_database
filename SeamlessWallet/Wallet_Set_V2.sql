@@ -9,7 +9,8 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Wallet_Set_V2`(
     IN Memo VARCHAR(200),
     IN RefTransId VARCHAR(100),
     OUT Is1stDepoist TINYINT,
-    OUT AfterAmount DECIMAL(18, 4)
+    OUT AfterAmount DECIMAL(18, 4),
+    IN GUID VARCHAR(50)
 /*
   Created: 20241226@Luke
         DB: TSDB-TSDB
@@ -77,6 +78,6 @@ BEGIN
         END IF;
     END IF;
 	
-	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Wallet_Set_V2', @starttime, CURRENT_TIMESTAMP(6));
+	INSERT INTO SPLog (spname, starttime, endtime, GUID) VALUES ('Wallet_Set_V2', @starttime, CURRENT_TIMESTAMP(6), GUID);
 END$$
 DELIMITER ;

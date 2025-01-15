@@ -3,7 +3,8 @@ DROP PROCEDURE IF EXISTS `Service_BettransRng_FaChai_TicketNo_Get`;
 DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_FaChai_TicketNo_Get`(
     IN YYYYMM VARCHAR(6),
-    IN TicketNo VARCHAR(200)
+    IN TicketNo VARCHAR(200),
+    IN GUID VARCHAR(50)
 )
 /*
   Created: 20241030@Luke
@@ -43,7 +44,7 @@ BEGIN
     EXECUTE stmt USING @TicketNo;
     DEALLOCATE PREPARE stmt;
 	
-	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_BettransRng_FaChai_TicketNo_Get', @starttime, CURRENT_TIMESTAMP(6));
+	INSERT INTO SPLog (spname, starttime, endtime, GUID) VALUES ('Service_BettransRng_FaChai_TicketNo_Get', @starttime, CURRENT_TIMESTAMP(6), GUID);
 END 
 $$
 DELIMITER ;

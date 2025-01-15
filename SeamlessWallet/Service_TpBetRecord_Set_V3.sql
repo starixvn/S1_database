@@ -22,7 +22,8 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_TpBetRecord_Set_V3`(
      IN OriginalState varchar(10),
      IN TicketKey bigint,
      IN BonusId int,
-     IN GameID varchar(50)
+     IN GameID varchar(50),
+     IN GUID VARCHAR(50)
 /*
   Created: 20250114@Kathy
         DB: TSDB-TSDB
@@ -103,6 +104,6 @@ BEGIN
         TpBetRecord.BonusId = BonusId,
         TpBetRecord.GameID = GameID;
 		
-	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_TpBetRecord_Set_V3', @starttime, CURRENT_TIMESTAMP(6));
+	INSERT INTO SPLog (spname, starttime, endtime, GUID) VALUES ('Service_TpBetRecord_Set_V3', @starttime, CURRENT_TIMESTAMP(6), GUID);
 END$$
 DELIMITER ;

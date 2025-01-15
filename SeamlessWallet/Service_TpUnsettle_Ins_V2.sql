@@ -4,7 +4,8 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_TpUnsettle_Ins_V2`(
     IN TpId  INT,
     IN GameType INT,
     IN TransId  VARCHAR(100),
-    IN PartitionTime DateTime
+    IN PartitionTime DateTime,
+    IN GUID VARCHAR(50)
 /*
   Created: 20250114@Kathy
         DB: TSDB-TSDB
@@ -37,7 +38,7 @@ BEGIN
         `TpUnsettle`.`SettleFlag`= 2,
         `TpUnsettle`.`PartitionTime`= PartitionTime;
 	
-	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_TpUnsettle_Ins_V2', @starttime, CURRENT_TIMESTAMP(6));
+	INSERT INTO SPLog (spname, starttime, endtime, GUID) VALUES ('Service_TpUnsettle_Ins_V2', @starttime, CURRENT_TIMESTAMP(6), GUID);
 	
 END$$
 DELIMITER ;

@@ -27,6 +27,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransLC_Sexy_Ins`(
     IN TicketType TINYINT,
     IN TicketStatus TINYINT,
     IN SettleFlag TINYINT,
+    IN GUID VARCHAR(50),
     OUT SQ BIGINT
 /*
   Created: 
@@ -128,7 +129,7 @@ BEGIN
     
     SET SQ = LAST_INSERT_ID();
 	
-	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_BettransLC_Sexy_Ins', @starttime, CURRENT_TIMESTAMP(6));
+	INSERT INTO SPLog (spname, starttime, endtime, GUID) VALUES ('Service_BettransLC_Sexy_Ins', @starttime, CURRENT_TIMESTAMP(6), GUID);
     
 END ;;
 DELIMITER ;

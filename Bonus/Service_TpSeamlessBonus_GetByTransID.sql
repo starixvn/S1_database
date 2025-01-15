@@ -3,6 +3,7 @@ DELIMITER $$
 CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_TpSeamlessBonus_GetByTransID`(
     IN TpId INT,
     IN TransId VARCHAR(100),
+    IN GUID VARCHAR(50),
     OUT CustId INT,
     OUT BonusId INT
 /*
@@ -30,7 +31,7 @@ BEGIN
         TpSeamlessBonus.TpId = TpId
             AND TpSeamlessBonus.TransId = TransId;
 			
-	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_TpSeamlessBonus_GetByTransID', @starttime, CURRENT_TIMESTAMP(6));
+	INSERT INTO SPLog (spname, starttime, endtime, GUID) VALUES ('Service_TpSeamlessBonus_GetByTransID', @starttime, CURRENT_TIMESTAMP(6), GUID);
 END$$
 DELIMITER ;
 

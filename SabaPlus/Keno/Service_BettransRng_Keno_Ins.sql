@@ -26,6 +26,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BettransRng_Keno_Ins`(
     IN TicketType TINYINT,
     IN TicketStatus TINYINT,
     IN SettleFlag TINYINT,
+    IN GUID VARCHAR(50),
     OUT SQ BIGINT
 /*
   Created: 20241106@Luke
@@ -126,6 +127,6 @@ BEGIN
     
     SET SQ = LAST_INSERT_ID();
     
-	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_BettransRng_Keno_Ins', @starttime, CURRENT_TIMESTAMP(6));
+	INSERT INTO SPLog (spname, starttime, endtime, GUID) VALUES ('Service_BettransRng_Keno_Ins', @starttime, CURRENT_TIMESTAMP(6), GUID);
 END$$
 DELIMITER ;

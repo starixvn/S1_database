@@ -4,6 +4,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_TpSeamlessBonus_Get`(
     IN TpId INT,
     IN TransId VARCHAR(100),
     IN GameType INT,
+    IN GUID VARCHAR(50),
     OUT CustId INT,
     OUT BonusId INT
 /*
@@ -32,7 +33,7 @@ BEGIN
             AND TpSeamlessBonus.TransId = TransId
             AND TpSeamlessBonus.GameType = GameType;
 			
-	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_TpSeamlessBonus_Get', @starttime, CURRENT_TIMESTAMP(6));
+	INSERT INTO SPLog (spname, starttime, endtime, GUID) VALUES ('Service_TpSeamlessBonus_Get', @starttime, CURRENT_TIMESTAMP(6), GUID);
 END$$
 DELIMITER ;
 

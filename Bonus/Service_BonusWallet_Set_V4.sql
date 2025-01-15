@@ -9,6 +9,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Service_BonusWallet_Set_V4`(
     IN `Type` SMALLINT,    
     IN Memo VARCHAR(200),
     IN RefTransId VARCHAR(100),
+	IN GUID VARCHAR(50),
     OUT AfterBonus DECIMAL(18,4),
     INOUT BonusId INT
 /*
@@ -104,7 +105,7 @@ BEGIN
             (BonusId, CustId, UserName, SiteId, `Type`, @PromoCategoryId, @Direction, ABS(@Bonus), @AfterBonus - @Bonus, @AfterBonus, Memo, RefTransId);
     END IF;
 	
-	INSERT INTO SPLog (spname, starttime, endtime) VALUES ('Service_BonusWallet_Set_V4', @starttime, CURRENT_TIMESTAMP(6));
+	INSERT INTO SPLog (spname, starttime, endtime, GUID) VALUES ('Service_BonusWallet_Set_V4', @starttime, CURRENT_TIMESTAMP(6), GUID);
 END$$
 DELIMITER ;
 
