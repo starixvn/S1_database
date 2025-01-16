@@ -4,7 +4,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_OTPLog_Get`(
     IN SiteId INT,
     IN SelectCurrency JSON,
     IN OTPProvider varchar(30),
-    IN OTPStatus int,
+    IN OTPStatus JSON,
     IN UserName varchar(30),
     IN PhoneNo varchar(20),
     IN StartDate DATETIME,
@@ -18,6 +18,7 @@ CREATE DEFINER=`dbo`@`%` PROCEDURE `Admin_OTPLog_Get`(
         Task: Admin OTP
         Revisions:
                 - 20250109@Kathy: modify sp
+                - 20250116@Issac: update status
 */
 )
 BEGIN
@@ -38,7 +39,7 @@ BEGIN
 			OR EXISTS (SELECT 1 FROM JSON_TABLE(SelectCurrency, '$[*]' COLUMNS(CurrencyId INT path "$")) AS cl WHERE cl.CurrencyId = O.CurrencyId)
 		)
         AND (OTPProvider = '' OR O.OTPProvider = OTPProvider)
-        AND (OTPStatus = 0 OR O.OTPStatus = OTPStatus)    
+        AND (json_length(OTPStatus) = 0 OR EXISTS (SELECT 1 FROM JSON_TABLE(OTPStatus, '$[*]' COLUMNS(OTPStatus INT path "$")) AS s WHERE s.OTPStatus = O.OTPStatus))
         AND (UserName = '' OR O.UserName = UserName)
         AND (PhoneNo = '' OR O.PhoneNo = PhoneNo)
         AND O.CreateTime BETWEEN StartDate AND EndDate ;
